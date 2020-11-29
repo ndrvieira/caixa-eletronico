@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Services\ATM;
 use App\Models\Account;
+use App\Models\TransactionType;
 use App\User;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class AccountController extends Controller
 {
@@ -12,6 +15,7 @@ class AccountController extends Controller
     {
         $this->validate($request, [
             'name' => 'required'
+            'cpf' =>
         ]);
 
         $account = new Account();
@@ -28,7 +32,10 @@ class AccountController extends Controller
         $accountId = $request->account_id;
         $account = Account::findOrFail($accountId);
         $value = $request->value;
-        $atm = new ATM($account, $value, 0);
+
+        $transactionType = TransactionType::where('name', 'deposit')->first();
+
+        new ATM($account, $value, $transactionType);
 
         return response()->json('Depósito no valor de R$' . number_format($value, 2) . ' efetuado com sucesso', 200);
     }
@@ -38,7 +45,10 @@ class AccountController extends Controller
         $accountId = $request->account_id;
         $account = Account::findOrFail($accountId);
         $value = $request->value;
-        $atm = new ATM($account, $value, 1);
+
+        $transactionType = TransactionType::where('name', 'withdraw')->first();
+
+        new ATM($account, $value, $transactionType);
 
         return response()->json('Saque no valor de R$' . number_format($value, 2) . ' efetuado com sucesso', 200);
     }

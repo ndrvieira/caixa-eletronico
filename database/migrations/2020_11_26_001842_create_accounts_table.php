@@ -17,7 +17,7 @@ class CreateAccountsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('account_type_id')->constrained();
-            $table->bigInteger('amount');
+            $table->bigInteger('amount')->default(0)->nullable(false);
             $table->timestamps();
         });
     }

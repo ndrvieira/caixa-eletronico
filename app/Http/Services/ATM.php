@@ -1,17 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Services;
 
 use App\Models\Account;
 use App\Models\Transaction;
 use App\Models\TransactionType;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-
-abstract class TransactionTypes
-{
-    const Deposit = 0;
-    const Withdraw = 1;
-}
 
 class ATM
 {

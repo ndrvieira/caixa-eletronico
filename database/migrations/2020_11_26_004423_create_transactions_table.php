@@ -17,8 +17,8 @@ class CreateTransactionsTable extends Migration
             $table->id();
             $table->foreignId('account_id')->constrained();
             $table->foreignId('transaction_type_id')->constrained();
-            $table->bigInteger('amount');
-            $table->boolean('opened');
+            $table->bigInteger('amount')->default(0)->nullable(false);
+            $table->boolean('opened')->nullable(false);
             $table->timestamps();
         });
     }

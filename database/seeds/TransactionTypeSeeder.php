@@ -12,12 +12,12 @@ class TransactionTypeSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('account_types')->insert([
-            'name' => 'deposito'
+        DB::table('transaction_types')->insert([
+            'name' => 'deposit'
         ]);
 
-        DB::table('account_types')->insert([
-            'name' => 'saque'
+        DB::table('transaction_types')->insert([
+            'name' => 'withdraw'
         ]);
     }
 }

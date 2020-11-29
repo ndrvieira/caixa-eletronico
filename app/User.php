@@ -2,18 +2,19 @@
 
 namespace App;
 
+use App\Helpers\DateHelper;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Date;
 use Laravel\Lumen\Auth\Authorizable;
+use Carbon\Carbon;
 
 /**
  * @property string name
  * @property Date birth_date
  * @property string cpf
- * @property string password
  * @property string api_token
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract
@@ -25,18 +26,28 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @var array
      */
-    protected $fillable = [
-        'name', 'birth_date', 'cpf', 'api_token'
+//    protected $fillable = [
+//        'name', 'birth_date', 'cpf'
+//    ];
+
+    protected $hidden = [
+        'name',
+        'birth_date',
+        'created_at',
+        'updated_at',
     ];
 
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
-    ];
+    protected $appends = ['nome', 'data_nascimento'];
+
+    public function getNomeAttribute()
+    {
+        return $this->name;
+    }
+
+    public function getDataNascimentoAttribute()
+    {
+        return DateHelper::convertToBrFormat($this->birth_date);
+    }
 
     /**
      * Get the account record associated with the user.

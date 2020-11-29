@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTransactionTypesTable extends Migration
+class CreateAccountTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateTransactionTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('transaction_types', function (Blueprint $table) {
+        Schema::create('account_types', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name', 50)->unique();
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ class CreateTransactionTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transaction_types');
+        Schema::dropIfExists('account_types');
     }
 }

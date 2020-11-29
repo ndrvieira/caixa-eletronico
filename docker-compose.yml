@@ -1,0 +1,50 @@
+version: "3.3"
+
+services:
+  db:
+    container_name: mysql
+    image: mysql:latest
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: lumen
+      MYSQL_USER: andre
+      MYSQL_PASSWORD: password
+    networks:
+      - web
+
+  nginx:
+    container_name: nginx
+    build: docker/nginx
+    command: nginx -g "daemon off;"
+    links:
+      - php
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+    networks:
+      - web
+
+  php:
+    container_name: php
+    build: docker/php
+    volumes:
+      - ./:/var/www/html/app
+    working_dir: /var/www/html/app/public
+    command: php-fpm
+    links:
+      - db:db
+    ports:
+      - "9000:9000"
+    depends_on:
+      - db
+    networks:
+      - web
+
+# Docker Networks
+networks:
+  web:
+    driver: bridge
