@@ -9,7 +9,6 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Date;
 use Laravel\Lumen\Auth\Authorizable;
-use Carbon\Carbon;
 
 /**
  * @property string name
@@ -26,15 +25,13 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @var array
      */
-//    protected $fillable = [
-//        'name', 'birth_date', 'cpf'
-//    ];
+    protected $fillable = [
+        'name', 'birth_date', 'cpf'
+    ];
 
     protected $hidden = [
         'name',
         'birth_date',
-        'created_at',
-        'updated_at',
     ];
 
     protected $appends = ['nome', 'data_nascimento'];

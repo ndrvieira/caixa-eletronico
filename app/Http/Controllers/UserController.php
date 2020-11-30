@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\UserService;
 use App\Rules\CPFValidation;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Lang;
 use App\Helpers\DateHelper;
 
 class UserController extends Controller
 {
     public function index()
     {
-        return response()->json(User::all());
+        return response()->json(User::paginate(50));
     }
 
     public function create(Request $request)
@@ -32,24 +32,15 @@ class UserController extends Controller
         return response()->json('Usuário criado com sucesso', 201);
     }
 
-    public function show($id)
+    public function show(int $user_id)
     {
-        try {
-            $user = User::findOrFail($id);
-        } catch (\Exception $e) {
-            return response()->json('Usuário não encontrado', 204);
-        }
-
+        $user = (new UserService())->customFindOrFail($user_id);
         return response()->json($user, 200);
     }
 
-    public function edit($id, Request $request)
+    public function edit(int $user_id, Request $request)
     {
-        try {
-            $user = User::findOrFail($id);
-        } catch (\Exception $e) {
-            return response()->json('Usuário não encontrado', 204);
-        }
+        $user = (new UserService())->customFindOrFail($user_id);
 
         $this->validate($request, [
             'nome' => 'max:100',
@@ -67,14 +58,9 @@ class UserController extends Controller
         return response()->json('Usuário editado com sucesso', 200);
     }
 
-    public function delete($id)
+    public function delete($user_id)
     {
-        try {
-            $user = User::findOrFail($id);
-        } catch (\Exception $e) {
-            return response()->json('Usuário não encontrado', 204);
-        }
-
+        $user = (new UserService())->customFindOrFail($user_id);
         $user->delete();
 
         return response()->json('Usuário removido com sucesso', 200);

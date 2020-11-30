@@ -11,8 +11,19 @@ class AccountType extends Model
 {
     protected $guarded = ['name'];
 
+    protected $hidden = [
+        'name',
+    ];
+
+    protected $appends = ['nome'];
+
+    public function getNomeAttribute()
+    {
+        return $this->name;
+    }
+
     public function accounts()
     {
-        return $this->belongsTo('App\Models\Account', 'account_type_id', 'id');
+        return $this->hasMany('App\Models\Account', 'account_type_id', 'id');
     }
 }

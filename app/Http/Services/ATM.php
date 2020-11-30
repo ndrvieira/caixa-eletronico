@@ -1,150 +1,109 @@
 <?php
 
-namespace App\Http\Controllers\Services;
+namespace App\Http\Services;
 
 use App\Models\Account;
-use App\Models\Transaction;
 use App\Models\TransactionType;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ATM
 {
     /** @var array $notas */
     private static $money_bills = [100, 50, 20];
-    /** @var int $delay */
-    private static $delay = 2;
+    /** @var int $delay Tempo em milisegundos para refazer uma operação em caso de operações concorrentes */
+    private static $delay = 1000;
+    /** @var int $max_tries Número máximo de tentativas para refazer uma operação em caso de operações concorrentes */
+    private static $max_tries = 5;
     /** @var Account $account */
     private $account;
     /** @var int $value */
     private $value;
     /** @var TransactionType $type */
-    private $type;
+    private $transaction_type;
 
-    public function __construct(Account $account, int $value, TransactionType $type)
+    public function __construct(Account $account, TransactionType $transaction_type, int $value)
     {
         $this->account = $account;
+        $this->transaction_type = $transaction_type;
         $this->value = $value;
-        $this->type = $type;
-    }
-
-    /**
-     * Creates a transaction to lock operations in client's account
-     * @return mixed
-     */
-    private function openTransaction()
-    {
-        return Transaction::create([
-            'account_id' => $this->account->id,
-            'transaction_type_id',
-            'amount' => $this->value,
-            'opened' => true,
-        ]);
-    }
-
-    /**
-     * Closes a transaction to unlock operations in client's account
-     * @param Transaction $transaction
-     */
-    private function closeTransaction(Transaction $transaction)
-    {
-        $transaction->opened = false;
-        $transaction->save();
-    }
-
-    /**
-     * Search for opened transactions, when found throws an exception
-     * @throws HttpException
-     */
-    public function findOpenedTransactions()
-    {
-        $open_transactions = Transaction::where('status', true)->where('account_id', $this->account->id)->limit(1);
-        if ($open_transactions) {
-            throw new HttpException('Caixa ocupado, tentando novamente');
-        }
     }
 
     /**
      * Initiate an operation on the client's account
-     * @param TransactionType $type
      * @param int $retries
      * @return bool
      */
-    public function initiateOperation(TransactionType $type, int $retries = 0)
+    public function initiateOperation(int $retries = 0)
     {
         try {
-            if ($type->id === TransactionTypes::Deposit) {
-                return $this->deposit();
-            } else if ($type->id === TransactionTypes::Withdraw) {
-                return $this->withdraw();
-            }
-            throw new HttpException('Erro. Tipo de transação não encontrada.');
+            return $this->mutateAccount();
         } catch (\Exception $e) {
-            if ($retries <= 5) {
+            if ($e->getStatusCode() === 503 && $retries <= self::$max_tries) {
                 $retries++;
-                sleep(self::$delay);
+                usleep(self::$delay * 1000);
                 return $this->initiateOperation($retries);
             }
-            throw new HttpException('Caixa ocupado, por favor tente mais tarde.');
+            abort($e->getStatusCode(), $e->getMessage());
         }
     }
 
     /**
-     * Performs a withdraw
+     * Performs a withdraw/deposit
      * @return bool
      */
-    private function withdraw()
+    private function mutateAccount()
     {
-        $this->findOpenedTransactions();
-        $transaction = $this->openTransaction();
-        $this->reloadAccountData();
-        $this->operationIsValid();
+        if ($this->setAccountBusy(true) === 0) {
+            abort(503, 'Caixa ocupado, por favor tente mais tarde');
+        }
 
-        $this->account->amount += $this->value;
-        $this->account->save();
 
-        $this->closeTransaction($transaction);
+        try {
+            /** @var Account $account Recarregando informações da conta */
+            $account = (new AccountService)->customFindOrFail($this->account->id);
+            /** Verificando se a operação é válida */
+            $this->operationIsValid();
+            /** Atualizando a conta */
+            $this->account = $account;
+            if ($this->transaction_type->name === 'deposit') {
+                $this->account->amount += $this->value;
+            } else if ($this->transaction_type->name === 'withdraw') {
+                $this->account->amount -= $this->value;
+            } else {
+                abort(400, 'Erro. Tipo de transação não encontrada.');
+            }
+            $this->account->save();
+        } catch (\Exception $e) {
+            /** Caso falhe, seta a conta para não ocupada para não travar a conta */
+            $this->setAccountBusy(false);
+            abort($e->getStatusCode(), $e->getMessage());
+        }
+
+        (new TransactionService)->createTransaction($this->account, $this->transaction_type, $this->value);
+
+        $this->setAccountBusy(false);
         return true;
     }
 
     /**
-     * Performs a deposit
-     * @return bool
+     * Sets the account to busy or not, depending the parameter passed, preventing concorrent requests
+     * @param boolean $status
+     * @return mixed
      */
-    public function deposit()
+    private function setAccountBusy(bool $status)
     {
-        $this->findOpenedTransactions();
-        $transaction = $this->openTransaction();
-        $this->reloadAccountData();
-        $this->operationIsValid();
-
-        $this->account->amount -= $this->value;
-        $this->account->save();
-
-        $this->closeTransaction($transaction);
-        return true;
-    }
-
-    /**
-     * Reload account data, fired before performing a withdraw/deposit
-     */
-    private function reloadAccountData()
-    {
-        $this->account = Account::find($this->account->id);
+        return Account::where('id', $this->account->id)->where('busy', !$status)->update(['busy' => $status]);
     }
 
     /**
      * Verifies if the operation user is trying to do is valid
-     * @param TransactionType $type
      */
     private function operationIsValid()
     {
-        if ($this->type->name === 'saque') {
+        if ($this->transaction_type->name === 'withdraw') {
             if ($this->account->amount < $this->value) {
-                throw new HttpException('Você não tem saldo suficiente para este saque');
-            }
-        } else if ($this->type->name === 'deposito') {
-            if (empty($this->calculateMoneyBills($this->value))) {
-                throw new HttpException('Valor solicitado não disponível para saque. Selecione um valor multiplo de 20, 50 e 100');
+                abort(400, 'Você não tem saldo suficiente para este saque');
+            } else if (empty($this->calculateMoneyBills($this->value))) {
+                abort(400, 'Valor solicitado não disponível para saque. Selecione um valor multiplo de 20, 50 e 100');
             }
         }
     }
@@ -157,7 +116,7 @@ class ATM
     private function calculateMoneyBills($value)
     {
         $final_bills = [];
-        foreach (ATM::$money_bills as $bill) {
+        foreach (self::$money_bills as $bill) {
             /** If it is divisible by the current bill and its not divisible by any other bill within a higher priority */
             if ($bill % $value && empty($final_bills)) {
                 return [$bill => $bill % $value];
@@ -173,7 +132,7 @@ class ATM
         }
 
         if ($value !== 0) {
-            throw new HttpException('Valor solicitado não disponível para saque. Selecione um valor multiplo de 20, 50 e 100');
+            abort(400, 'Valor solicitado não disponível para saque. Selecione um valor multiplo de 20, 50 e 100');
         }
 
         return $final_bills;

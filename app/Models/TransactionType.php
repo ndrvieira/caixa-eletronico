@@ -8,8 +8,8 @@ class TransactionType extends Model
 {
     protected $guarded = ['name'];
 
-    public function transaction()
+    public function transactions()
     {
-        return $this->belongsTo('App\Models\Transaction', 'type_id', 'id');
+        return $this->hasMany('App\Models\Transaction', 'transaction_type_id', 'id');
     }
 }

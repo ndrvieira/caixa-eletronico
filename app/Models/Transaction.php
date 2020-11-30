@@ -2,27 +2,40 @@
 
 namespace App\Models;
 
-use DateTime;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int account_id
  * @property int transaction_type_id
  * @property int amount
- * @property boolean opened
- * @property DateTime date
  */
 class Transaction extends Model
 {
-    protected $guarded = ['account_id', 'transaction_type_id', 'amount', 'opened', 'date'];
+    protected $guarded = ['account_id', 'transaction_type_id', 'amount'];
+
+    protected $hidden = [
+        'amount', 'transactionType'
+    ];
+
+    protected $appends = ['valor', 'tipo'];
+
+    public function getValorAttribute()
+    {
+        return $this->amount;
+    }
+
+    public function getTipoAttribute()
+    {
+        return $this->transactionType->name === 'deposit' ? 'Depósito' : 'Saque';
+    }
 
     public function account()
     {
         return $this->belongsTo('App\Models\Account', 'account_id', 'id');
     }
 
-    public function type()
+    public function transactionType()
     {
-        return $this->hasOne('App\Models\TransactionType', 'type_id', 'id');
+        return $this->hasOne('App\Models\TransactionType', 'id', 'transaction_type_id');
     }
 }
