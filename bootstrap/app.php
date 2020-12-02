@@ -1,5 +1,7 @@
 <?php
 
+use App\Routing\Router;
+
 require_once __DIR__.'/../vendor/autoload.php';
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
@@ -60,6 +62,7 @@ $app->singleton(
 */
 
 $app->configure('app');
+$app->configure('scribe');
 
 /*
 |--------------------------------------------------------------------------
@@ -93,6 +96,8 @@ $app->routeMiddleware([
 
 // $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
+$app->register(\Knuckles\Scribe\ScribeServiceProvider::class);
+$app->register(\App\Helpers\HelperServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
 /*

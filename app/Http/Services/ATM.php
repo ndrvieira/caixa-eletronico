@@ -56,7 +56,6 @@ class ATM
             abort(503, 'Caixa ocupado, por favor tente mais tarde');
         }
 
-
         try {
             /** @var Account $account Recarregando informações da conta */
             $account = (new AccountService)->customFindOrFail($this->account->id);
