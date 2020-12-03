@@ -22,27 +22,27 @@ class AccountController extends Controller
     /**
 	 * Listar
      *
-     * Lista as contas do usuário informado.
+     * Lista as contas de um usuário.
 	 *
      * @queryParam user_id integer required Código do usuário Example: 1
-     * @response scenario=success [
+     * @response scenario=Sucesso [
      *     {
-     *         "id": 1
-     *         "user_id": 1
-     *         "account_type_id": 1
-     *         "saldo": 50
-     *         "tipo": "corrente"
+     *         "id": 1,
+     *         "user_id": 1,
+     *         "account_type_id": 1,
+     *         "saldo": 50,
+     *         "tipo": "corrente",
      *     },
      *     {
-     *         "id": 2
-     *         "user_id": 1
-     *         "account_type_id": 2
-     *         "saldo": 50
-     *         "tipo": "poupança"
+     *         "id": 2,
+     *         "user_id": 1,
+     *         "account_type_id": 2,
+     *         "saldo": 50,
+     *         "tipo": "poupança",
      *     }
      * ]
-     * @response status=400 scenario="user_not_found" {
-     *    "message": "Usuário não encontrado."
+     * @response status=400 scenario="Usuário não encontrado" {
+     *     "message": "Usuário não encontrado."
      * }
      *
      * @param int $user_id
@@ -57,23 +57,23 @@ class AccountController extends Controller
     /**
 	 * Criar
      *
-     * Cria uma conta para o usuário informado.
+     * Cria uma conta para o usuário informado com um saldo inicial. Tipos aceitos: "corrente" e "poupança".
 	 *
      * @queryParam user_id integer required Código do usuário Example: 1
 	 * @bodyParam tipo string required Tipo da conta (corrente ou poupança). Example: poupança
-     * @bodyParam saldo integer required Saldo inicial da conta. Example: 500
-     * @response scenario=success {
-     *  "id": 5,
-     *  "message": "Conta criada com sucesso."
+     * @bodyParam saldo integer required Saldo inicial da conta, somente valores positivos. Example: 500
+     * @response scenario=Sucesso {
+     *    "id": 5,
+     *    "message": "Conta criada com sucesso."
      * }
-     * @response status=400 scenario="user_not_found" {
-     *  "message": "Usuário não encontrado."
+     * @response status=400 scenario="Usuário não encontrado" {
+     *     "message": "Usuário não encontrado."
      * }
-     * @response status=400 scenario="account_type_not_found" {
-     *  "message": "Tipo de conta não encontrado."
+     * @response status=400 scenario="Tipo de conta inexistente" {
+     *     "message": "Tipo de conta não encontrado."
      * }
-     * @response status=400 scenario="user_has_account" {
-     *  "message": "O usuário já possui uma conta do tipo informado"
+     * @response status=400 scenario="Usuário já possui conta" {
+     *     "message": "O usuário já possui uma conta do tipo informado"
      * }
      *
      * @param int $user_id
@@ -107,22 +107,23 @@ class AccountController extends Controller
     /**
 	 * Depositar
      *
-     * Realiza o depósito do valor informado na conta informada.
+     * Realiza o depósito de um determinado valor na conta de um usuário.
 	 *
      * @queryParam user_id integer required Código do usuário Example: 1
      * @queryParam account_id integer required Código da conta do usuário Example: 1
      * @bodyParam valor integer required Valor do depósito. Example: 500
-     * @response scenario=success {
-     *  "message": "Depósito no valor de R$ 500,00 efetuado com sucesso."
+     * @response scenario=Sucesso {
+     *     "saldo": 50,
+     *     "message": "Depósito no valor de R$ 500,00 efetuado com sucesso."
      * }
-     * @response status=400 scenario="user_not_found" {
-     *  "message": "Usuário não encontrado."
+     * @response status=400 scenario="Usuário não encontrado" {
+     *     "message": "Usuário não encontrado."
      * }
-     * @response status=400 scenario="account_not_found" {
-     *  "message": "Conta não encontrada."
+     * @response status=400 scenario="Conta não encontrada" {
+     *     "message": "Conta não encontrada."
      * }
-     * @response status=503 scenario="account_busy" {
-     *  "message": "Caixa ocupado, por favor tente mais tarde"
+     * @response status=503 scenario="Caixa ocupado" {
+     *     "message": "Caixa ocupado, por favor tente mais tarde"
      * }
      *
      * @param int $user_id
@@ -145,39 +146,49 @@ class AccountController extends Controller
         $transactionType = TransactionType::where('name', 'deposit')->first();
 
         $atm = new ATM($account, $transactionType, $value);
-        $atm->initiateOperation();
+        $atmResponse = $atm->initiateOperation();
 
-        return response()->json(['message' => 'Depósito no valor de R$' . number_format($value, 2) . ' efetuado com sucesso'], 200);
+        return response()->json([
+            'saldo' => $atmResponse->account->amount,
+            'message' => 'Depósito no valor de R$' . number_format($value, 2, ',', '.') . ' efetuado com sucesso'
+        ], 200);
     }
 
     /**
 	 * Sacar
      *
-     * Realiza o saque do valor informado na conta informada.
+     * Realiza o saque de um determinado valor na conta de um usuário, e retorna o saldo e 
+     * a quantidade de cada nota que deve retornar
 	 *
      * @queryParam user_id integer required Código do usuário Example: 1
      * @queryParam account_id integer required Código da conta do usuário Example: 1
      * @bodyParam valor integer required Valor do saque. Example: 500
-     * @response scenario=success {
-     *  "message": "Saque no valor de R$ 500,00 efetuado com sucesso."
+     * @response scenario=Sucesso {
+     *     "notas" => [
+     *        "100": 1,
+     *        "50": 1,
+     *        "20": 0
+     *     ],
+     *     "saldo": 50,
+     *     "message": "Saque no valor de R$ 500,00 efetuado com sucesso."
      * }
-     * @response status=400 scenario="user_not_found" {
-     *  "message": "Usuário não encontrado."
+     * @response status=400 scenario="Usuário não encontrado" {
+     *     "message": "Usuário não encontrado."
      * }
-     * @response status=400 scenario="account_not_found" {
-     *  "message": "Conta não encontrada."
+     * @response status=400 scenario="Conta Não encontrada" {
+     *     "message": "Conta não encontrada."
      * }
      * @response status=400 scenario="transaction_type_not_found" {
-     *  "message": "Erro. Tipo de transação não encontrada."
+     *     "message": "Erro. Tipo de transação não encontrada."
      * }
      * @response status=400 scenario="insuficient_funds" {
-     *  "message": "Você não tem saldo suficiente para este saque"
+     *     "message": "Você não tem saldo suficiente para este saque"
      * }
      * @response status=400 scenario="wrong_amount" {
-     *  "message": "Valor solicitado não disponível para saque. Selecione um valor multiplo de 20, 50 e 100"
+     *     "message": "Valor solicitado não disponível para saque. Selecione um valor multiplo de 20, 50 e 100"
      * }
-     * @response status=503 scenario="account_busy" {
-     *  "message": "Caixa ocupado, por favor tente mais tarde"
+     * @response status=503 scenario="Caixa ocupado" {
+     *     "message": "Caixa ocupado, por favor tente mais tarde"
      * }
      *
      * @param int $user_id
@@ -200,26 +211,60 @@ class AccountController extends Controller
         $transactionType = TransactionType::where('name', 'withdraw')->first();
 
         $atm = new ATM($account, $transactionType, $value);
-        $atm->initiateOperation();
+        $atmResponse = $atm->initiateOperation();
 
-        return response()->json(['message' => 'Saque no valor de R$' . number_format($value, 2) . ' efetuado com sucesso'], 200);
+        return response()->json([
+            'notas' => $atmResponse->returning_bills,
+            'saldo' => $atmResponse->account->amount,
+            'message' => 'Saque no valor de R$' . number_format($value, 2, ',', '.') . ' efetuado com sucesso'
+        ], 200);
     }
 
     /**
 	 * Consultar extrato
      *
-     * Consulta o extrato da conta informada
+     * Consulta o extrato da conta de um usuário.
 	 *
      * @queryParam user_id integer required Código do usuário Example: 1
      * @queryParam account_id integer required Código da conta do usuário Example: 1
-     * @response scenario=success {
-     *  "message": "oi"
+     * @response scenario=Sucesso {
+     *     "current_page": 1,
+     *     "data": [
+     *         {
+     *             "id": 1,
+     *             "account_id": 1,
+     *             "transaction_type_id": 1,
+     *             "created_at": "2020-12-02T02:07:02.000000Z",
+     *             "updated_at": "2020-12-02T02:07:02.000000Z",
+     *             "valor": 50,
+     *             "tipo": "Depósito"
+     *         },
+     *         {
+     *             "id": 2,
+     *             "account_id": 1,
+     *             "transaction_type_id": 1,
+     *             "created_at": "2020-12-02T02:07:07.000000Z",
+     *             "updated_at": "2020-12-02T02:07:07.000000Z",
+     *             "valor": 50,
+     *             "tipo": "Depósito"
+     *         },
+     *     ],
+     *     "first_page_url": "http://localhost/api/v1/users/1/accounts/1/statement?page=1",
+     *     "from": 1,
+     *     "last_page": 1,
+     *     "last_page_url": "http://localhost/api/v1/users/1/accounts/1/statement?page=1",
+     *     "next_page_url": null,
+     *     "path": "http://localhost/api/v1/users/1/accounts/1/statement",
+     *     "per_page": 50,
+     *     "prev_page_url": null,
+     *     "to": 20,
+     *     "total": 20
      * }
-     * @response status=400 scenario="user_not_found" {
-     *  "message": "Usuário não encontrado."
+     * @response status=400 scenario="Usuário não encontrado" {
+     *     "message": "Usuário não encontrado."
      * }
-     * @response status=400 scenario="account_not_found" {
-     *  "message": "Conta não encontrada."
+     * @response status=400 scenario="Conta Não encontrada" {
+     *     "message": "Conta não encontrada."
      * }
      *
      * @param int $user_id

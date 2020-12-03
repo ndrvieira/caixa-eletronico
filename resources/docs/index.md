@@ -21,14 +21,14 @@ toc_footers:
 
 ---
 
-# Introduction
+# Introdução
 
 
 
-Documentação da API Caixa eletrônico. Esta API não usa autenticação.
+Documentação da API Caixa eletrônico.
 
 <aside>Conforme você for rolando a página, irá ver exemplos de código de como utilizar esta API em algumas linguagens de programação (exibido no canto direito, escuro dessa página).
-Você poderá selecionar a linguagem no canto superior direito desta tela.</aside>
+Você poderá selecionar a linguagem no canto superior direito desta tela, para ter exemplos de requisições.</aside>
 
 
 > Base URL

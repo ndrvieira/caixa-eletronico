@@ -1,3 +1,3 @@
-# Authenticating requests
+# Autenticação
 
-This API is not authenticated.
+Essa API não utiliza autenticação.

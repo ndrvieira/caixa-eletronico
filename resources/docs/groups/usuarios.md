@@ -2,12 +2,12 @@
 
 API para gerenciar usuários
 
-## Listar usuários
+## Listar
 
 
+Lista todos os usuários cadastrados no sistema
 
-
-> Example request:
+> Exemplo de requisição:
 
 ```bash
 curl -X GET \
@@ -64,373 +64,40 @@ response.json()
 ```
 
 
-> Example response (500):
+> Exemplo de resposta (200, Sucesso):
 
 ```json
+
 {
-    "message": "SQLSTATE[42S02]: Base table or view not found: 1146 Table 'lumen.users' doesn't exist (SQL: select count(*) as aggregate from `users`)",
-    "exception": "Illuminate\\Database\\QueryException",
-    "file": "\/var\/www\/html\/app\/vendor\/illuminate\/database\/Connection.php",
-    "line": 671,
-    "trace": [
+    "current_page": 1,
+    "data": [
         {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/database\/Connection.php",
-            "line": 631,
-            "function": "runQueryCallback",
-            "class": "Illuminate\\Database\\Connection",
-            "type": "->"
+            "id": 1,
+            "cpf": "306.045.290-31",
+            "created_at": "2020-12-02T01:39:47.000000Z",
+            "updated_at": "2020-12-02T01:39:47.000000Z",
+            "nome": "André",
+            "data_nascimento": "01/01/1992"
         },
         {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/database\/Connection.php",
-            "line": 339,
-            "function": "run",
-            "class": "Illuminate\\Database\\Connection",
-            "type": "->"
+            "id": 2,
+            "cpf": "148.078.190-89",
+            "created_at": "2020-12-02T01:42:47.000000Z",
+            "updated_at": "2020-12-02T01:42:47.000000Z",
+            "nome": "Pedro",
+            "data_nascimento": "01/01/1993"
         },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/database\/Query\/Builder.php",
-            "line": 2260,
-            "function": "select",
-            "class": "Illuminate\\Database\\Connection",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/database\/Query\/Builder.php",
-            "line": 2248,
-            "function": "runSelect",
-            "class": "Illuminate\\Database\\Query\\Builder",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/database\/Query\/Builder.php",
-            "line": 2743,
-            "function": "Illuminate\\Database\\Query\\{closure}",
-            "class": "Illuminate\\Database\\Query\\Builder",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/database\/Query\/Builder.php",
-            "line": 2249,
-            "function": "onceWithColumns",
-            "class": "Illuminate\\Database\\Query\\Builder",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/database\/Query\/Builder.php",
-            "line": 2359,
-            "function": "get",
-            "class": "Illuminate\\Database\\Query\\Builder",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/database\/Query\/Builder.php",
-            "line": 2318,
-            "function": "runPaginationCountQuery",
-            "class": "Illuminate\\Database\\Query\\Builder",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/database\/Eloquent\/Builder.php",
-            "line": 731,
-            "function": "getCountForPagination",
-            "class": "Illuminate\\Database\\Query\\Builder",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/support\/Traits\/ForwardsCalls.php",
-            "line": 23,
-            "function": "paginate",
-            "class": "Illuminate\\Database\\Eloquent\\Builder",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/database\/Eloquent\/Model.php",
-            "line": 1736,
-            "function": "forwardCallTo",
-            "class": "Illuminate\\Database\\Eloquent\\Model",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/database\/Eloquent\/Model.php",
-            "line": 1748,
-            "function": "__call",
-            "class": "Illuminate\\Database\\Eloquent\\Model",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/app\/Http\/Controllers\/UserController.php",
-            "line": 24,
-            "function": "__callStatic",
-            "class": "Illuminate\\Database\\Eloquent\\Model",
-            "type": "::"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/container\/BoundMethod.php",
-            "line": 36,
-            "function": "index",
-            "class": "App\\Http\\Controllers\\UserController",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/container\/Util.php",
-            "line": 37,
-            "function": "Illuminate\\Container\\{closure}",
-            "class": "Illuminate\\Container\\BoundMethod",
-            "type": "::"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/container\/BoundMethod.php",
-            "line": 93,
-            "function": "unwrapIfClosure",
-            "class": "Illuminate\\Container\\Util",
-            "type": "::"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/container\/BoundMethod.php",
-            "line": 37,
-            "function": "callBoundMethod",
-            "class": "Illuminate\\Container\\BoundMethod",
-            "type": "::"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/container\/Container.php",
-            "line": 596,
-            "function": "call",
-            "class": "Illuminate\\Container\\BoundMethod",
-            "type": "::"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/laravel\/lumen-framework\/src\/Concerns\/RoutesRequests.php",
-            "line": 386,
-            "function": "call",
-            "class": "Illuminate\\Container\\Container",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/laravel\/lumen-framework\/src\/Concerns\/RoutesRequests.php",
-            "line": 352,
-            "function": "callControllerCallable",
-            "class": "Laravel\\Lumen\\Application",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/laravel\/lumen-framework\/src\/Concerns\/RoutesRequests.php",
-            "line": 326,
-            "function": "callLumenController",
-            "class": "Laravel\\Lumen\\Application",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/laravel\/lumen-framework\/src\/Concerns\/RoutesRequests.php",
-            "line": 279,
-            "function": "callControllerAction",
-            "class": "Laravel\\Lumen\\Application",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/laravel\/lumen-framework\/src\/Concerns\/RoutesRequests.php",
-            "line": 264,
-            "function": "callActionOnArrayBasedRoute",
-            "class": "Laravel\\Lumen\\Application",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/laravel\/lumen-framework\/src\/Concerns\/RoutesRequests.php",
-            "line": 166,
-            "function": "handleFoundRoute",
-            "class": "Laravel\\Lumen\\Application",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/laravel\/lumen-framework\/src\/Concerns\/RoutesRequests.php",
-            "line": 426,
-            "function": "Laravel\\Lumen\\Concerns\\{closure}",
-            "class": "Laravel\\Lumen\\Application",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/laravel\/lumen-framework\/src\/Concerns\/RoutesRequests.php",
-            "line": 172,
-            "function": "sendThroughPipeline",
-            "class": "Laravel\\Lumen\\Application",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/laravel\/lumen-framework\/src\/Concerns\/RoutesRequests.php",
-            "line": 92,
-            "function": "dispatch",
-            "class": "Laravel\\Lumen\\Application",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/knuckleswtf\/scribe\/src\/Extracting\/Strategies\/Responses\/ResponseCalls.php",
-            "line": 333,
-            "function": "handle",
-            "class": "Laravel\\Lumen\\Application",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/knuckleswtf\/scribe\/src\/Extracting\/Strategies\/Responses\/ResponseCalls.php",
-            "line": 305,
-            "function": "callLaravelOrLumenRoute",
-            "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/knuckleswtf\/scribe\/src\/Extracting\/Strategies\/Responses\/ResponseCalls.php",
-            "line": 76,
-            "function": "makeApiCall",
-            "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/knuckleswtf\/scribe\/src\/Extracting\/Strategies\/Responses\/ResponseCalls.php",
-            "line": 51,
-            "function": "makeResponseCall",
-            "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/knuckleswtf\/scribe\/src\/Extracting\/Strategies\/Responses\/ResponseCalls.php",
-            "line": 41,
-            "function": "makeResponseCallIfEnabledAndNoSuccessResponses",
-            "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/knuckleswtf\/scribe\/src\/Extracting\/Generator.php",
-            "line": 236,
-            "function": "__invoke",
-            "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/knuckleswtf\/scribe\/src\/Extracting\/Generator.php",
-            "line": 172,
-            "function": "iterateThroughStrategies",
-            "class": "Knuckles\\Scribe\\Extracting\\Generator",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/knuckleswtf\/scribe\/src\/Extracting\/Generator.php",
-            "line": 127,
-            "function": "fetchResponses",
-            "class": "Knuckles\\Scribe\\Extracting\\Generator",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/knuckleswtf\/scribe\/src\/Commands\/GenerateDocumentation.php",
-            "line": 119,
-            "function": "processRoute",
-            "class": "Knuckles\\Scribe\\Extracting\\Generator",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/knuckleswtf\/scribe\/src\/Commands\/GenerateDocumentation.php",
-            "line": 73,
-            "function": "processRoutes",
-            "class": "Knuckles\\Scribe\\Commands\\GenerateDocumentation",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/container\/BoundMethod.php",
-            "line": 36,
-            "function": "handle",
-            "class": "Knuckles\\Scribe\\Commands\\GenerateDocumentation",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/container\/Util.php",
-            "line": 37,
-            "function": "Illuminate\\Container\\{closure}",
-            "class": "Illuminate\\Container\\BoundMethod",
-            "type": "::"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/container\/BoundMethod.php",
-            "line": 93,
-            "function": "unwrapIfClosure",
-            "class": "Illuminate\\Container\\Util",
-            "type": "::"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/container\/BoundMethod.php",
-            "line": 37,
-            "function": "callBoundMethod",
-            "class": "Illuminate\\Container\\BoundMethod",
-            "type": "::"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/container\/Container.php",
-            "line": 596,
-            "function": "call",
-            "class": "Illuminate\\Container\\BoundMethod",
-            "type": "::"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/console\/Command.php",
-            "line": 134,
-            "function": "call",
-            "class": "Illuminate\\Container\\Container",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/symfony\/console\/Command\/Command.php",
-            "line": 258,
-            "function": "execute",
-            "class": "Illuminate\\Console\\Command",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/console\/Command.php",
-            "line": 121,
-            "function": "run",
-            "class": "Symfony\\Component\\Console\\Command\\Command",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/symfony\/console\/Application.php",
-            "line": 920,
-            "function": "run",
-            "class": "Illuminate\\Console\\Command",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/symfony\/console\/Application.php",
-            "line": 266,
-            "function": "doRunCommand",
-            "class": "Symfony\\Component\\Console\\Application",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/symfony\/console\/Application.php",
-            "line": 142,
-            "function": "doRun",
-            "class": "Symfony\\Component\\Console\\Application",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/console\/Application.php",
-            "line": 93,
-            "function": "run",
-            "class": "Symfony\\Component\\Console\\Application",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/laravel\/lumen-framework\/src\/Console\/Kernel.php",
-            "line": 116,
-            "function": "run",
-            "class": "Illuminate\\Console\\Application",
-            "type": "->"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/artisan",
-            "line": 35,
-            "function": "handle",
-            "class": "Laravel\\Lumen\\Console\\Kernel",
-            "type": "->"
-        }
-    ]
+    ],
+    "first_page_url": "http://localhost/api/v1/users?page=1",
+    "from": 1,
+    "last_page": 1,
+    "last_page_url": "http://localhost/api/v1/users?page=1",
+    "next_page_url": null,
+    "path": "http://localhost/api/v1/users",
+    "per_page": 50,
+    "prev_page_url": null,
+    "to": 1,
+    "total": 1
 }
 ```
 <div id="execution-results-GETapi-v1-users" hidden>
@@ -452,12 +119,12 @@ response.json()
 </form>
 
 
-## Criar um usuário
+## Criar
 
 
+Cria um usuário no sistema
 
-
-> Example request:
+> Exemplo de requisição:
 
 ```bash
 curl -X POST \
@@ -532,7 +199,7 @@ response.json()
 ```
 
 
-> Example response (200, Sucesso):
+> Exemplo de resposta (200, Sucesso):
 
 ```json
 {
@@ -540,11 +207,27 @@ response.json()
     "message": "Usuário criado com sucesso."
 }
 ```
-> Example response (400, Usuário não encontrado):
+> Exemplo de resposta (400, Dados inválidos):
 
 ```json
 {
-    "message": "Usuário não encontrado"
+    "cpf": [
+        "O cpf informado é inválido."
+    ]
+}
+```
+> Exemplo de resposta (400, CPF já existente):
+
+```json
+{
+    "message": "O CPF informado já foi registrado em outro usuário."
+}
+```
+> Exemplo de resposta (400, Erro na aplicação):
+
+```json
+{
+    "message": "Erro ao cadastrar usuário"
 }
 ```
 <div id="execution-results-POSTapi-v1-users" hidden>
@@ -583,23 +266,23 @@ Data no formato: d/m/Y.</p>
 </form>
 
 
-## Buscar um usuário específico
+## Buscar
 
 
+Busca um usuário específico no sistema através do seu id
 
-
-> Example request:
+> Exemplo de requisição:
 
 ```bash
 curl -X GET \
-    -G "http://localhost/api/v1/users/quia?user_id=1" \
+    -G "http://localhost/api/v1/users/ut?user_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/api/v1/users/quia"
+    "http://localhost/api/v1/users/ut"
 );
 
 let params = {
@@ -624,7 +307,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->get(
-    'http://localhost/api/v1/users/quia',
+    'http://localhost/api/v1/users/ut',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -643,7 +326,7 @@ print_r(json_decode((string) $body));
 import requests
 import json
 
-url = 'http://localhost/api/v1/users/quia'
+url = 'http://localhost/api/v1/users/ut'
 params = {
   'user_id': '1',
 }
@@ -657,15 +340,19 @@ response.json()
 ```
 
 
-> Example response (200, Sucesso):
+> Exemplo de resposta (200, Sucesso):
 
 ```json
-
 {
- "id": 4,
+    "id": 1,
+    "cpf": "306.045.290-31",
+    "created_at": "2020-12-02T01:39:47.000000Z",
+    "updated_at": "2020-12-02T01:39:47.000000Z",
+    "nome": "André",
+    "data_nascimento": "01\/01\/1992"
 }
 ```
-> Example response (400, Usuário não encontrado):
+> Exemplo de resposta (400, Usuário não encontrado):
 
 ```json
 {
@@ -699,27 +386,27 @@ response.json()
 <b><code>user_id</code></b>&nbsp;&nbsp;<small>integer</small>  &nbsp;
 <input type="number" name="user_id" data-endpoint="GETapi-v1-users--user_id-" data-component="query" required  hidden>
 <br>
-Código do usuário</p>
+Código do usuário.</p>
 </form>
 
 
-## Editar um usuário específico
+## Editar
 
 
+Edita um usuário no sistema
 
-
-> Example request:
+> Exemplo de requisição:
 
 ```bash
 curl -X PUT \
-    "http://localhost/api/v1/users/eveniet?user_id=1" \
+    "http://localhost/api/v1/users/sit?user_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/api/v1/users/eveniet"
+    "http://localhost/api/v1/users/sit"
 );
 
 let params = {
@@ -744,7 +431,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->put(
-    'http://localhost/api/v1/users/eveniet',
+    'http://localhost/api/v1/users/sit',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -763,7 +450,7 @@ print_r(json_decode((string) $body));
 import requests
 import json
 
-url = 'http://localhost/api/v1/users/eveniet'
+url = 'http://localhost/api/v1/users/sit'
 params = {
   'user_id': '1',
 }
@@ -777,20 +464,43 @@ response.json()
 ```
 
 
-> Example response (200, Sucesso):
+> Exemplo de resposta (200, Sucesso):
 
 ```json
 
 {
- "user": 4,
- "message": "Usuário editado com sucesso",
+    "user": {
+       "id": 1,
+       "cpf": "306.045.290-31",
+       "created_at": "2020-12-02T01:39:47.000000Z",
+       "updated_at": "2020-12-02T01:39:47.000000Z",
+       "nome": "André",
+       "data_nascimento": "01/01/1992"
+    },
+    "message": "Usuário editado com sucesso",
 }
 ```
-> Example response (400, Usuário não encontrado):
+> Exemplo de resposta (400, Usuário não encontrado):
 
 ```json
 {
     "message": "Usuário não encontrado"
+}
+```
+> Exemplo de resposta (400, Dados inválidos):
+
+```json
+{
+    "nome": [
+        "O nome informado é inválido."
+    ]
+}
+```
+> Exemplo de resposta (400, Erro na aplicação):
+
+```json
+{
+    "message": "Erro ao cadastrar usuário"
 }
 ```
 <div id="execution-results-PUTapi-v1-users--user_id-" hidden>
@@ -820,27 +530,27 @@ response.json()
 <b><code>user_id</code></b>&nbsp;&nbsp;<small>integer</small>  &nbsp;
 <input type="number" name="user_id" data-endpoint="PUTapi-v1-users--user_id-" data-component="query" required  hidden>
 <br>
-Código do usuário</p>
+Código do usuário.</p>
 </form>
 
 
-## Deleta um usuário específico
+## Deletar
 
 
+Deleta um usuário do sistema
 
-
-> Example request:
+> Exemplo de requisição:
 
 ```bash
 curl -X DELETE \
-    "http://localhost/api/v1/users/aut?user_id=1" \
+    "http://localhost/api/v1/users/fugit?user_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/api/v1/users/aut"
+    "http://localhost/api/v1/users/fugit"
 );
 
 let params = {
@@ -865,7 +575,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->delete(
-    'http://localhost/api/v1/users/aut',
+    'http://localhost/api/v1/users/fugit',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -884,7 +594,7 @@ print_r(json_decode((string) $body));
 import requests
 import json
 
-url = 'http://localhost/api/v1/users/aut'
+url = 'http://localhost/api/v1/users/fugit'
 params = {
   'user_id': '1',
 }
@@ -898,15 +608,15 @@ response.json()
 ```
 
 
-> Example response (200, Sucesso):
+> Exemplo de resposta (200, Sucesso):
 
 ```json
 
 {
- "message": "Usuário removido com sucesso",
+    "message": "Usuário removido com sucesso",
 }
 ```
-> Example response (400, Usuário não encontrado):
+> Exemplo de resposta (400, Usuário não encontrado):
 
 ```json
 {
@@ -940,7 +650,7 @@ response.json()
 <b><code>user_id</code></b>&nbsp;&nbsp;<small>integer</small>  &nbsp;
 <input type="number" name="user_id" data-endpoint="DELETEapi-v1-users--user_id-" data-component="query" required  hidden>
 <br>
-Código do usuário</p>
+Código do usuário.</p>
 </form>
 
 

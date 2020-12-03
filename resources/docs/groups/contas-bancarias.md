@@ -5,20 +5,20 @@ API para gerenciar contas de usuários
 ## Listar
 
 
-Lista as contas do usuário informado.
+Lista as contas de um usuário.
 
-> Example request:
+> Exemplo de requisição:
 
 ```bash
 curl -X GET \
-    -G "http://localhost/api/v1/users/doloribus/accounts?user_id=1" \
+    -G "http://localhost/api/v1/users/corporis/accounts?user_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/api/v1/users/doloribus/accounts"
+    "http://localhost/api/v1/users/corporis/accounts"
 );
 
 let params = {
@@ -43,7 +43,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->get(
-    'http://localhost/api/v1/users/doloribus/accounts',
+    'http://localhost/api/v1/users/corporis/accounts',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -62,7 +62,7 @@ print_r(json_decode((string) $body));
 import requests
 import json
 
-url = 'http://localhost/api/v1/users/doloribus/accounts'
+url = 'http://localhost/api/v1/users/corporis/accounts'
 params = {
   'user_id': '1',
 }
@@ -76,28 +76,28 @@ response.json()
 ```
 
 
-> Example response (200, success):
+> Exemplo de resposta (200, Sucesso):
 
 ```json
 
 [
     {
-        "id": 1
-        "user_id": 1
-        "account_type_id": 1
-        "saldo": 50
-        "tipo": "corrente"
+        "id": 1,
+        "user_id": 1,
+        "account_type_id": 1,
+        "saldo": 50,
+        "tipo": "corrente",
     },
     {
-        "id": 2
-        "user_id": 1
-        "account_type_id": 2
-        "saldo": 50
-        "tipo": "poupança"
+        "id": 2,
+        "user_id": 1,
+        "account_type_id": 2,
+        "saldo": 50,
+        "tipo": "poupança",
     }
 ]
 ```
-> Example response (400, user_not_found):
+> Exemplo de resposta (400, Usuário não encontrado):
 
 ```json
 {
@@ -138,13 +138,13 @@ Código do usuário</p>
 ## Criar
 
 
-Cria uma conta para o usuário informado.
+Cria uma conta para o usuário informado com um saldo inicial. Tipos aceitos: "corrente" e "poupança".
 
-> Example request:
+> Exemplo de requisição:
 
 ```bash
 curl -X POST \
-    "http://localhost/api/v1/users/et/accounts?user_id=1" \
+    "http://localhost/api/v1/users/at/accounts?user_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"tipo":"poupan\u00e7a","saldo":500}'
@@ -153,7 +153,7 @@ curl -X POST \
 
 ```javascript
 const url = new URL(
-    "http://localhost/api/v1/users/et/accounts"
+    "http://localhost/api/v1/users/at/accounts"
 );
 
 let params = {
@@ -183,7 +183,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->post(
-    'http://localhost/api/v1/users/et/accounts',
+    'http://localhost/api/v1/users/at/accounts',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -206,7 +206,7 @@ print_r(json_decode((string) $body));
 import requests
 import json
 
-url = 'http://localhost/api/v1/users/et/accounts'
+url = 'http://localhost/api/v1/users/at/accounts'
 payload = {
     "tipo": "poupan\u00e7a",
     "saldo": 500
@@ -224,7 +224,7 @@ response.json()
 ```
 
 
-> Example response (200, success):
+> Exemplo de resposta (200, Sucesso):
 
 ```json
 {
@@ -232,21 +232,21 @@ response.json()
     "message": "Conta criada com sucesso."
 }
 ```
-> Example response (400, user_not_found):
+> Exemplo de resposta (400, Usuário não encontrado):
 
 ```json
 {
     "message": "Usuário não encontrado."
 }
 ```
-> Example response (400, account_type_not_found):
+> Exemplo de resposta (400, Tipo de conta inexistente):
 
 ```json
 {
     "message": "Tipo de conta não encontrado."
 }
 ```
-> Example response (400, user_has_account):
+> Exemplo de resposta (400, Usuário já possui conta):
 
 ```json
 {
@@ -291,7 +291,7 @@ Tipo da conta (corrente ou poupança).</p>
 <b><code>saldo</code></b>&nbsp;&nbsp;<small>integer</small>  &nbsp;
 <input type="number" name="saldo" data-endpoint="POSTapi-v1-users--user_id--accounts" data-component="body" required  hidden>
 <br>
-Saldo inicial da conta.</p>
+Saldo inicial da conta, somente valores positivos.</p>
 
 </form>
 
@@ -299,20 +299,20 @@ Saldo inicial da conta.</p>
 ## Listar
 
 
-Lista as contas do usuário informado.
+Lista as contas de um usuário.
 
-> Example request:
+> Exemplo de requisição:
 
 ```bash
 curl -X GET \
-    -G "http://localhost/api/v1/users/aut/accounts/accusamus?user_id=1" \
+    -G "http://localhost/api/v1/users/nemo/accounts/aut?user_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/api/v1/users/aut/accounts/accusamus"
+    "http://localhost/api/v1/users/nemo/accounts/aut"
 );
 
 let params = {
@@ -337,7 +337,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->get(
-    'http://localhost/api/v1/users/aut/accounts/accusamus',
+    'http://localhost/api/v1/users/nemo/accounts/aut',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -356,7 +356,7 @@ print_r(json_decode((string) $body));
 import requests
 import json
 
-url = 'http://localhost/api/v1/users/aut/accounts/accusamus'
+url = 'http://localhost/api/v1/users/nemo/accounts/aut'
 params = {
   'user_id': '1',
 }
@@ -370,28 +370,28 @@ response.json()
 ```
 
 
-> Example response (200, success):
+> Exemplo de resposta (200, Sucesso):
 
 ```json
 
 [
     {
-        "id": 1
-        "user_id": 1
-        "account_type_id": 1
-        "saldo": 50
-        "tipo": "corrente"
+        "id": 1,
+        "user_id": 1,
+        "account_type_id": 1,
+        "saldo": 50,
+        "tipo": "corrente",
     },
     {
-        "id": 2
-        "user_id": 1
-        "account_type_id": 2
-        "saldo": 50
-        "tipo": "poupança"
+        "id": 2,
+        "user_id": 1,
+        "account_type_id": 2,
+        "saldo": 50,
+        "tipo": "poupança",
     }
 ]
 ```
-> Example response (400, user_not_found):
+> Exemplo de resposta (400, Usuário não encontrado):
 
 ```json
 {
@@ -437,13 +437,13 @@ Código do usuário</p>
 ## Depositar
 
 
-Realiza o depósito do valor informado na conta informada.
+Realiza o depósito de um determinado valor na conta de um usuário.
 
-> Example request:
+> Exemplo de requisição:
 
 ```bash
 curl -X POST \
-    "http://localhost/api/v1/users/et/accounts/mollitia/deposit?user_id=1&account_id=1" \
+    "http://localhost/api/v1/users/voluptatem/accounts/accusamus/deposit?user_id=1&account_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"valor":500}'
@@ -452,7 +452,7 @@ curl -X POST \
 
 ```javascript
 const url = new URL(
-    "http://localhost/api/v1/users/et/accounts/mollitia/deposit"
+    "http://localhost/api/v1/users/voluptatem/accounts/accusamus/deposit"
 );
 
 let params = {
@@ -482,7 +482,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->post(
-    'http://localhost/api/v1/users/et/accounts/mollitia/deposit',
+    'http://localhost/api/v1/users/voluptatem/accounts/accusamus/deposit',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -505,7 +505,7 @@ print_r(json_decode((string) $body));
 import requests
 import json
 
-url = 'http://localhost/api/v1/users/et/accounts/mollitia/deposit'
+url = 'http://localhost/api/v1/users/voluptatem/accounts/accusamus/deposit'
 payload = {
     "valor": 500
 }
@@ -523,28 +523,29 @@ response.json()
 ```
 
 
-> Example response (200, success):
+> Exemplo de resposta (200, Sucesso):
 
 ```json
 {
+    "saldo": 50,
     "message": "Depósito no valor de R$ 500,00 efetuado com sucesso."
 }
 ```
-> Example response (400, user_not_found):
+> Exemplo de resposta (400, Usuário não encontrado):
 
 ```json
 {
     "message": "Usuário não encontrado."
 }
 ```
-> Example response (400, account_not_found):
+> Exemplo de resposta (400, Conta não encontrada):
 
 ```json
 {
     "message": "Conta não encontrada."
 }
 ```
-> Example response (503, account_busy):
+> Exemplo de resposta (503, Caixa ocupado):
 
 ```json
 {
@@ -602,13 +603,14 @@ Valor do depósito.</p>
 ## Sacar
 
 
-Realiza o saque do valor informado na conta informada.
+Realiza o saque de um determinado valor na conta de um usuário, e retorna o saldo e
+a quantidade de cada nota que deve retornar
 
-> Example request:
+> Exemplo de requisição:
 
 ```bash
 curl -X POST \
-    "http://localhost/api/v1/users/laudantium/accounts/quis/withdraw?user_id=1&account_id=1" \
+    "http://localhost/api/v1/users/tempore/accounts/maxime/withdraw?user_id=1&account_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"valor":500}'
@@ -617,7 +619,7 @@ curl -X POST \
 
 ```javascript
 const url = new URL(
-    "http://localhost/api/v1/users/laudantium/accounts/quis/withdraw"
+    "http://localhost/api/v1/users/tempore/accounts/maxime/withdraw"
 );
 
 let params = {
@@ -647,7 +649,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->post(
-    'http://localhost/api/v1/users/laudantium/accounts/quis/withdraw',
+    'http://localhost/api/v1/users/tempore/accounts/maxime/withdraw',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -670,7 +672,7 @@ print_r(json_decode((string) $body));
 import requests
 import json
 
-url = 'http://localhost/api/v1/users/laudantium/accounts/quis/withdraw'
+url = 'http://localhost/api/v1/users/tempore/accounts/maxime/withdraw'
 payload = {
     "valor": 500
 }
@@ -688,49 +690,56 @@ response.json()
 ```
 
 
-> Example response (200, success):
+> Exemplo de resposta (200, Sucesso):
 
 ```json
+
 {
+    "notas" => [
+       "100": 1,
+       "50": 1,
+       "20": 0
+    ],
+    "saldo": 50,
     "message": "Saque no valor de R$ 500,00 efetuado com sucesso."
 }
 ```
-> Example response (400, user_not_found):
+> Exemplo de resposta (400, Usuário não encontrado):
 
 ```json
 {
     "message": "Usuário não encontrado."
 }
 ```
-> Example response (400, account_not_found):
+> Exemplo de resposta (400, Conta Não encontrada):
 
 ```json
 {
     "message": "Conta não encontrada."
 }
 ```
-> Example response (400, transaction_type_not_found):
+> Exemplo de resposta (400, transaction_type_not_found):
 
 ```json
 {
     "message": "Erro. Tipo de transação não encontrada."
 }
 ```
-> Example response (400, insuficient_funds):
+> Exemplo de resposta (400, insuficient_funds):
 
 ```json
 {
     "message": "Você não tem saldo suficiente para este saque"
 }
 ```
-> Example response (400, wrong_amount):
+> Exemplo de resposta (400, wrong_amount):
 
 ```json
 {
     "message": "Valor solicitado não disponível para saque. Selecione um valor multiplo de 20, 50 e 100"
 }
 ```
-> Example response (503, account_busy):
+> Exemplo de resposta (503, Caixa ocupado):
 
 ```json
 {
@@ -788,20 +797,20 @@ Valor do saque.</p>
 ## Consultar extrato
 
 
-Consulta o extrato da conta informada
+Consulta o extrato da conta de um usuário.
 
-> Example request:
+> Exemplo de requisição:
 
 ```bash
 curl -X GET \
-    -G "http://localhost/api/v1/users/et/accounts/officia/statement?user_id=1&account_id=1" \
+    -G "http://localhost/api/v1/users/magnam/accounts/aliquid/statement?user_id=1&account_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/api/v1/users/et/accounts/officia/statement"
+    "http://localhost/api/v1/users/magnam/accounts/aliquid/statement"
 );
 
 let params = {
@@ -827,7 +836,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->get(
-    'http://localhost/api/v1/users/et/accounts/officia/statement',
+    'http://localhost/api/v1/users/magnam/accounts/aliquid/statement',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -847,7 +856,7 @@ print_r(json_decode((string) $body));
 import requests
 import json
 
-url = 'http://localhost/api/v1/users/et/accounts/officia/statement'
+url = 'http://localhost/api/v1/users/magnam/accounts/aliquid/statement'
 params = {
   'user_id': '1',
   'account_id': '1',
@@ -862,21 +871,52 @@ response.json()
 ```
 
 
-> Example response (200, success):
+> Exemplo de resposta (200, Sucesso):
 
 ```json
+
 {
-    "message": "oi"
+    "current_page": 1,
+    "data": [
+        {
+            "id": 1,
+            "account_id": 1,
+            "transaction_type_id": 1,
+            "created_at": "2020-12-02T02:07:02.000000Z",
+            "updated_at": "2020-12-02T02:07:02.000000Z",
+            "valor": 50,
+            "tipo": "Depósito"
+        },
+        {
+            "id": 2,
+            "account_id": 1,
+            "transaction_type_id": 1,
+            "created_at": "2020-12-02T02:07:07.000000Z",
+            "updated_at": "2020-12-02T02:07:07.000000Z",
+            "valor": 50,
+            "tipo": "Depósito"
+        },
+    ],
+    "first_page_url": "http://localhost/api/v1/users/1/accounts/1/statement?page=1",
+    "from": 1,
+    "last_page": 1,
+    "last_page_url": "http://localhost/api/v1/users/1/accounts/1/statement?page=1",
+    "next_page_url": null,
+    "path": "http://localhost/api/v1/users/1/accounts/1/statement",
+    "per_page": 50,
+    "prev_page_url": null,
+    "to": 20,
+    "total": 20
 }
 ```
-> Example response (400, user_not_found):
+> Exemplo de resposta (400, Usuário não encontrado):
 
 ```json
 {
     "message": "Usuário não encontrado."
 }
 ```
-> Example response (400, account_not_found):
+> Exemplo de resposta (400, Conta Não encontrada):
 
 ```json
 {

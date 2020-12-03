@@ -4,6 +4,9 @@ namespace App\Http\Services;
 
 use App\Models\Account;
 use App\Models\TransactionType;
+use DateTime;
+use DateTimeZone;
+use stdClass;
 
 class ATM
 {
@@ -13,12 +16,14 @@ class ATM
     private static $delay = 1000;
     /** @var int $max_tries Número máximo de tentativas para refazer uma operação em caso de operações concorrentes */
     private static $max_tries = 5;
-    /** @var Account $account */
+    /** @var Account $account Conta do cliente */
     private $account;
-    /** @var int $value */
+    /** @var int $value Valor do saque */
     private $value;
-    /** @var TransactionType $type */
+    /** @var TransactionType $type Tipo da transação */
     private $transaction_type;
+    /** @var array $returning_bills O conjunto de notas que o caixa eletrônico deve retornar */
+    private $returning_bills;
 
     public function __construct(Account $account, TransactionType $transaction_type, int $value)
     {
@@ -28,30 +33,33 @@ class ATM
     }
 
     /**
-     * Initiate an operation on the client's account
+     * Inicia uma operação na conta do usuário
      * @param int $retries
-     * @return bool
+     * @return Account
      */
     public function initiateOperation(int $retries = 0)
     {
         try {
             return $this->mutateAccount();
         } catch (\Exception $e) {
-            if ($e->getStatusCode() === 503 && $retries <= self::$max_tries) {
+            if ($e->getMessage() == 'Caixa ocupado, por favor tente mais tarde' && $retries <= self::$max_tries) {
                 $retries++;
                 usleep(self::$delay * 1000);
                 return $this->initiateOperation($retries);
             }
-            abort($e->getStatusCode(), $e->getMessage());
+            throw $e;
         }
     }
 
     /**
-     * Performs a withdraw/deposit
-     * @return bool
+     * Realiza um saque/depósito
+     * @return {
+     *    returning
+     * }
      */
     private function mutateAccount()
     {
+        $this->verfifiesAccountBusyErrors();
         if ($this->setAccountBusy(true) === 0) {
             abort(503, 'Caixa ocupado, por favor tente mais tarde');
         }
@@ -74,17 +82,20 @@ class ATM
         } catch (\Exception $e) {
             /** Caso falhe, seta a conta para não ocupada para não travar a conta */
             $this->setAccountBusy(false);
-            abort($e->getStatusCode(), $e->getMessage());
+            throw $e;
         }
 
         (new TransactionService)->createTransaction($this->account, $this->transaction_type, $this->value);
 
         $this->setAccountBusy(false);
-        return true;
+        $return = new stdClass();
+        $return->returning_bills = $this->returning_bills;
+        $return->account = $this->account;
+        return $return;
     }
 
     /**
-     * Sets the account to busy or not, depending the parameter passed, preventing concorrent requests
+     * Seta a conta para ocupada/desocupada, dependendo do parâmetro passado, previne requisições concorrentes
      * @param boolean $status
      * @return mixed
      */
@@ -94,7 +105,7 @@ class ATM
     }
 
     /**
-     * Verifies if the operation user is trying to do is valid
+     * Verifica se a operação é válida
      */
     private function operationIsValid()
     {
@@ -108,32 +119,83 @@ class ATM
     }
 
     /**
-     * Calculates the amount and the value of the money bills that the ATM should deliver
-     * @param $value
+     * Todas as exceptions tem tratamento para destravar a conta, mas só para garantir, quando uma conta ficar ocupada por mais de 15 segundos
+     * o sistema desbloqueia essa conta para evitar que ela fique presa.
+     */
+    private function verfifiesAccountBusyErrors()
+    {
+        $now = time();
+        try {
+            $timezone = new DateTimeZone(getenv('APP_TIMEZONE')) ?? null;
+        } catch (\Exception $e) {
+            abort(500, 'Timezone configurada incorretamente');
+        }
+        $last_update = DateTime::createFromFormat('Y-m-d H:i:s', $this->account->updated_at, $timezone)->getTimestamp();
+        if ($now - $last_update > 15) {
+            $this->setAccountBusy(false);
+        }
+    }
+
+    /**
+     * Calcula a quantidade de cada nota que o caixa deve retornar, colocando como prioridade as notas mais altas,
+     * nesse ponto, o saldo já foi verificado e o cliente possui saldo suficiente
+     * 
+     * @param int $value
      * @return array
      */
-    private function calculateMoneyBills($value)
+    private function calculateMoneyBills(int $value)
     {
-        $final_bills = [];
-        foreach (self::$money_bills as $bill) {
-            /** If it is divisible by the current bill and its not divisible by any other bill within a higher priority */
-            if ($bill % $value && empty($final_bills)) {
-                return [$bill => $bill % $value];
-            }
-            /** If not, tries to return money bills based on a higher priority */
-            $bill_quantity = ceil($bill / $value);
-            if ($bill_quantity > 0) {
-                /** Decrease the value */
-                $value -= $bill_quantity * $bill;
-                /** Adds to the final bills */
-                $final_bills[$bill] = $bill_quantity;
-            }
-        }
-
-        if ($value !== 0) {
-            abort(400, 'Valor solicitado não disponível para saque. Selecione um valor multiplo de 20, 50 e 100');
-        }
-
+        $final_bills = $this->getBillSet(self::$money_bills, $value);
+        $this->returning_bills = $final_bills;
         return $final_bills;
+    }
+
+    /**
+     * @param array $available_bills Conjunto de notas disponíveis
+     * @param int $value Valor do saque
+     * @return array
+     */
+    private function getBillSet(array $available_bills, int $value)
+    {
+        $bill_set = [];
+        $mutable_value = $value;
+        foreach ($available_bills as $bill) {
+            $number_of_bills = $this->getNumberOfBills($bill, $mutable_value);
+            $bill_set[$bill] = $number_of_bills;
+            $mutable_value -= $bill * $number_of_bills;
+        }
+
+        /** Se foi possivel zerar o valor com esse set, volta */
+        if ($mutable_value === 0) {
+            /** Se foi possivel zerar o valor com esse set, retorna esse set */
+            return $bill_set;
+        } else if ($mutable_value !== 0 && count($available_bills) >= 2) {
+            /** Se não, mas ainda existe a possibilidade, tenta com essa nova possibilidade, q vai remover o ultimo elemento do array */
+            array_shift($available_bills);
+            return $this->getBillSet($available_bills, $value);
+        } else {
+            dd([$mutable_value, $bill, $number_of_bills, $bill * $number_of_bills]);
+            return [];
+        }
+    }
+
+    /**
+     * Retorna a quantidade de notas que aquele valor pode retornar
+     * 
+     * @param int $bill Valor que deseja subtrair
+     * @param int $value Valor de quem deseja subtrair
+     * @param int $number Número de subtrações
+     * @return int
+     */
+    private function getNumberOfBills(int $bill, int $value, int $number = 0)
+    {
+        if ($value >= $bill) {
+            $value -= $bill;
+            $number++;
+            if ($value >= $bill) {
+                return $this->getNumberOfBills($bill, $value, $number);
+            }
+        }
+        return $number;
     }
 }

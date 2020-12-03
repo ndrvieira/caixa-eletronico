@@ -44,33 +44,33 @@
                             <li><a href='http://github.com/knuckleswtf/scribe'>Documentation powered by Scribe ✍</a></li>
                     </ul>
             <ul class="toc-footer" id="last-updated">
-            <li>Last updated: December 1 2020</li>
+            <li>Last updated: December 3 2020</li>
         </ul>
 </div>
 <div class="page-wrapper">
     <div class="dark-box"></div>
     <div class="content">
-        <h1>Introduction</h1>
-<p>Documentação da API Caixa eletrônico. Esta API não usa autenticação.</p>
+        <h1>Introdução</h1>
+<p>Documentação da API Caixa eletrônico.</p>
 <aside>Conforme você for rolando a página, irá ver exemplos de código de como utilizar esta API em algumas linguagens de programação (exibido no canto direito, escuro dessa página).
-Você poderá selecionar a linguagem no canto superior direito desta tela.</aside>
+Você poderá selecionar a linguagem no canto superior direito desta tela, para ter exemplos de requisições.</aside>
 <blockquote>
 <p>Base URL</p>
 </blockquote>
-<pre><code class="language-yaml">http://localhost</code></pre><h1>Authenticating requests</h1>
-<p>This API is not authenticated.</p><h1>Contas bancárias</h1>
+<pre><code class="language-yaml">http://localhost</code></pre><h1>Autenticação</h1>
+<p>Essa API não utiliza autenticação.</p><h1>Contas bancárias</h1>
 <p>API para gerenciar contas de usuários</p>
 <h2>Listar</h2>
-<p>Lista as contas do usuário informado.</p>
+<p>Lista as contas de um usuário.</p>
 <blockquote>
-<p>Example request:</p>
+<p>Exemplo de requisição:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://localhost/api/v1/users/doloribus/accounts?user_id=1" \
+    -G "http://localhost/api/v1/users/corporis/accounts?user_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/users/doloribus/accounts"
+    "http://localhost/api/v1/users/corporis/accounts"
 );
 
 let params = {
@@ -91,7 +91,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://localhost/api/v1/users/doloribus/accounts',
+    'http://localhost/api/v1/users/corporis/accounts',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -107,7 +107,7 @@ print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost/api/v1/users/doloribus/accounts'
+url = 'http://localhost/api/v1/users/corporis/accounts'
 params = {
   'user_id': '1',
 }
@@ -119,27 +119,27 @@ headers = {
 response = requests.request('GET', url, headers=headers, params=params)
 response.json()</code></pre>
 <blockquote>
-<p>Example response (200, success):</p>
+<p>Exemplo de resposta (200, Sucesso):</p>
 </blockquote>
 <pre><code class="language-json">
 [
     {
-        "id": 1
-        "user_id": 1
-        "account_type_id": 1
-        "saldo": 50
-        "tipo": "corrente"
+        "id": 1,
+        "user_id": 1,
+        "account_type_id": 1,
+        "saldo": 50,
+        "tipo": "corrente",
     },
     {
-        "id": 2
-        "user_id": 1
-        "account_type_id": 2
-        "saldo": 50
-        "tipo": "poupança"
+        "id": 2,
+        "user_id": 1,
+        "account_type_id": 2,
+        "saldo": 50,
+        "tipo": "poupança",
     }
 ]</code></pre>
 <blockquote>
-<p>Example response (400, user_not_found):</p>
+<p>Exemplo de resposta (400, Usuário não encontrado):</p>
 </blockquote>
 <pre><code class="language-json">{
     "message": "Usuário não encontrado."
@@ -174,18 +174,18 @@ response.json()</code></pre>
 Código do usuário</p>
 </form>
 <h2>Criar</h2>
-<p>Cria uma conta para o usuário informado.</p>
+<p>Cria uma conta para o usuário informado com um saldo inicial. Tipos aceitos: &quot;corrente&quot; e &quot;poupança&quot;.</p>
 <blockquote>
-<p>Example request:</p>
+<p>Exemplo de requisição:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X POST \
-    "http://localhost/api/v1/users/et/accounts?user_id=1" \
+    "http://localhost/api/v1/users/at/accounts?user_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"tipo":"poupan\u00e7a","saldo":500}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/users/et/accounts"
+    "http://localhost/api/v1/users/at/accounts"
 );
 
 let params = {
@@ -212,7 +212,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;post(
-    'http://localhost/api/v1/users/et/accounts',
+    'http://localhost/api/v1/users/at/accounts',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -232,7 +232,7 @@ print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost/api/v1/users/et/accounts'
+url = 'http://localhost/api/v1/users/at/accounts'
 payload = {
     "tipo": "poupan\u00e7a",
     "saldo": 500
@@ -248,26 +248,26 @@ headers = {
 response = requests.request('POST', url, headers=headers, json=payload, params=params)
 response.json()</code></pre>
 <blockquote>
-<p>Example response (200, success):</p>
+<p>Exemplo de resposta (200, Sucesso):</p>
 </blockquote>
 <pre><code class="language-json">{
     "id": 5,
     "message": "Conta criada com sucesso."
 }</code></pre>
 <blockquote>
-<p>Example response (400, user_not_found):</p>
+<p>Exemplo de resposta (400, Usuário não encontrado):</p>
 </blockquote>
 <pre><code class="language-json">{
     "message": "Usuário não encontrado."
 }</code></pre>
 <blockquote>
-<p>Example response (400, account_type_not_found):</p>
+<p>Exemplo de resposta (400, Tipo de conta inexistente):</p>
 </blockquote>
 <pre><code class="language-json">{
     "message": "Tipo de conta não encontrado."
 }</code></pre>
 <blockquote>
-<p>Example response (400, user_has_account):</p>
+<p>Exemplo de resposta (400, Usuário já possui conta):</p>
 </blockquote>
 <pre><code class="language-json">{
     "message": "O usuário já possui uma conta do tipo informado"
@@ -310,20 +310,20 @@ Tipo da conta (corrente ou poupança).</p>
 <b><code>saldo</code></b>&nbsp;&nbsp;<small>integer</small>  &nbsp;
 <input type="number" name="saldo" data-endpoint="POSTapi-v1-users--user_id--accounts" data-component="body" required  hidden>
 <br>
-Saldo inicial da conta.</p>
+Saldo inicial da conta, somente valores positivos.</p>
 
 </form>
 <h2>Listar</h2>
-<p>Lista as contas do usuário informado.</p>
+<p>Lista as contas de um usuário.</p>
 <blockquote>
-<p>Example request:</p>
+<p>Exemplo de requisição:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://localhost/api/v1/users/aut/accounts/accusamus?user_id=1" \
+    -G "http://localhost/api/v1/users/nemo/accounts/aut?user_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/users/aut/accounts/accusamus"
+    "http://localhost/api/v1/users/nemo/accounts/aut"
 );
 
 let params = {
@@ -344,7 +344,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://localhost/api/v1/users/aut/accounts/accusamus',
+    'http://localhost/api/v1/users/nemo/accounts/aut',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -360,7 +360,7 @@ print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost/api/v1/users/aut/accounts/accusamus'
+url = 'http://localhost/api/v1/users/nemo/accounts/aut'
 params = {
   'user_id': '1',
 }
@@ -372,27 +372,27 @@ headers = {
 response = requests.request('GET', url, headers=headers, params=params)
 response.json()</code></pre>
 <blockquote>
-<p>Example response (200, success):</p>
+<p>Exemplo de resposta (200, Sucesso):</p>
 </blockquote>
 <pre><code class="language-json">
 [
     {
-        "id": 1
-        "user_id": 1
-        "account_type_id": 1
-        "saldo": 50
-        "tipo": "corrente"
+        "id": 1,
+        "user_id": 1,
+        "account_type_id": 1,
+        "saldo": 50,
+        "tipo": "corrente",
     },
     {
-        "id": 2
-        "user_id": 1
-        "account_type_id": 2
-        "saldo": 50
-        "tipo": "poupança"
+        "id": 2,
+        "user_id": 1,
+        "account_type_id": 2,
+        "saldo": 50,
+        "tipo": "poupança",
     }
 ]</code></pre>
 <blockquote>
-<p>Example response (400, user_not_found):</p>
+<p>Exemplo de resposta (400, Usuário não encontrado):</p>
 </blockquote>
 <pre><code class="language-json">{
     "message": "Usuário não encontrado."
@@ -432,18 +432,18 @@ response.json()</code></pre>
 Código do usuário</p>
 </form>
 <h2>Depositar</h2>
-<p>Realiza o depósito do valor informado na conta informada.</p>
+<p>Realiza o depósito de um determinado valor na conta de um usuário.</p>
 <blockquote>
-<p>Example request:</p>
+<p>Exemplo de requisição:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X POST \
-    "http://localhost/api/v1/users/et/accounts/mollitia/deposit?user_id=1&amp;account_id=1" \
+    "http://localhost/api/v1/users/voluptatem/accounts/accusamus/deposit?user_id=1&amp;account_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"valor":500}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/users/et/accounts/mollitia/deposit"
+    "http://localhost/api/v1/users/voluptatem/accounts/accusamus/deposit"
 );
 
 let params = {
@@ -470,7 +470,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;post(
-    'http://localhost/api/v1/users/et/accounts/mollitia/deposit',
+    'http://localhost/api/v1/users/voluptatem/accounts/accusamus/deposit',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -490,7 +490,7 @@ print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost/api/v1/users/et/accounts/mollitia/deposit'
+url = 'http://localhost/api/v1/users/voluptatem/accounts/accusamus/deposit'
 payload = {
     "valor": 500
 }
@@ -506,25 +506,26 @@ headers = {
 response = requests.request('POST', url, headers=headers, json=payload, params=params)
 response.json()</code></pre>
 <blockquote>
-<p>Example response (200, success):</p>
+<p>Exemplo de resposta (200, Sucesso):</p>
 </blockquote>
 <pre><code class="language-json">{
+    "saldo": 50,
     "message": "Depósito no valor de R$ 500,00 efetuado com sucesso."
 }</code></pre>
 <blockquote>
-<p>Example response (400, user_not_found):</p>
+<p>Exemplo de resposta (400, Usuário não encontrado):</p>
 </blockquote>
 <pre><code class="language-json">{
     "message": "Usuário não encontrado."
 }</code></pre>
 <blockquote>
-<p>Example response (400, account_not_found):</p>
+<p>Exemplo de resposta (400, Conta não encontrada):</p>
 </blockquote>
 <pre><code class="language-json">{
     "message": "Conta não encontrada."
 }</code></pre>
 <blockquote>
-<p>Example response (503, account_busy):</p>
+<p>Exemplo de resposta (503, Caixa ocupado):</p>
 </blockquote>
 <pre><code class="language-json">{
     "message": "Caixa ocupado, por favor tente mais tarde"
@@ -576,18 +577,19 @@ Valor do depósito.</p>
 
 </form>
 <h2>Sacar</h2>
-<p>Realiza o saque do valor informado na conta informada.</p>
+<p>Realiza o saque de um determinado valor na conta de um usuário, e retorna o saldo e
+a quantidade de cada nota que deve retornar</p>
 <blockquote>
-<p>Example request:</p>
+<p>Exemplo de requisição:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X POST \
-    "http://localhost/api/v1/users/laudantium/accounts/quis/withdraw?user_id=1&amp;account_id=1" \
+    "http://localhost/api/v1/users/tempore/accounts/maxime/withdraw?user_id=1&amp;account_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"valor":500}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/users/laudantium/accounts/quis/withdraw"
+    "http://localhost/api/v1/users/tempore/accounts/maxime/withdraw"
 );
 
 let params = {
@@ -614,7 +616,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;post(
-    'http://localhost/api/v1/users/laudantium/accounts/quis/withdraw',
+    'http://localhost/api/v1/users/tempore/accounts/maxime/withdraw',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -634,7 +636,7 @@ print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost/api/v1/users/laudantium/accounts/quis/withdraw'
+url = 'http://localhost/api/v1/users/tempore/accounts/maxime/withdraw'
 payload = {
     "valor": 500
 }
@@ -650,43 +652,50 @@ headers = {
 response = requests.request('POST', url, headers=headers, json=payload, params=params)
 response.json()</code></pre>
 <blockquote>
-<p>Example response (200, success):</p>
+<p>Exemplo de resposta (200, Sucesso):</p>
 </blockquote>
-<pre><code class="language-json">{
+<pre><code class="language-json">
+{
+    "notas" =&gt; [
+       "100": 1,
+       "50": 1,
+       "20": 0
+    ],
+    "saldo": 50,
     "message": "Saque no valor de R$ 500,00 efetuado com sucesso."
 }</code></pre>
 <blockquote>
-<p>Example response (400, user_not_found):</p>
+<p>Exemplo de resposta (400, Usuário não encontrado):</p>
 </blockquote>
 <pre><code class="language-json">{
     "message": "Usuário não encontrado."
 }</code></pre>
 <blockquote>
-<p>Example response (400, account_not_found):</p>
+<p>Exemplo de resposta (400, Conta Não encontrada):</p>
 </blockquote>
 <pre><code class="language-json">{
     "message": "Conta não encontrada."
 }</code></pre>
 <blockquote>
-<p>Example response (400, transaction_type_not_found):</p>
+<p>Exemplo de resposta (400, transaction_type_not_found):</p>
 </blockquote>
 <pre><code class="language-json">{
     "message": "Erro. Tipo de transação não encontrada."
 }</code></pre>
 <blockquote>
-<p>Example response (400, insuficient_funds):</p>
+<p>Exemplo de resposta (400, insuficient_funds):</p>
 </blockquote>
 <pre><code class="language-json">{
     "message": "Você não tem saldo suficiente para este saque"
 }</code></pre>
 <blockquote>
-<p>Example response (400, wrong_amount):</p>
+<p>Exemplo de resposta (400, wrong_amount):</p>
 </blockquote>
 <pre><code class="language-json">{
     "message": "Valor solicitado não disponível para saque. Selecione um valor multiplo de 20, 50 e 100"
 }</code></pre>
 <blockquote>
-<p>Example response (503, account_busy):</p>
+<p>Exemplo de resposta (503, Caixa ocupado):</p>
 </blockquote>
 <pre><code class="language-json">{
     "message": "Caixa ocupado, por favor tente mais tarde"
@@ -738,16 +747,16 @@ Valor do saque.</p>
 
 </form>
 <h2>Consultar extrato</h2>
-<p>Consulta o extrato da conta informada</p>
+<p>Consulta o extrato da conta de um usuário.</p>
 <blockquote>
-<p>Example request:</p>
+<p>Exemplo de requisição:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://localhost/api/v1/users/et/accounts/officia/statement?user_id=1&amp;account_id=1" \
+    -G "http://localhost/api/v1/users/magnam/accounts/aliquid/statement?user_id=1&amp;account_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/users/et/accounts/officia/statement"
+    "http://localhost/api/v1/users/magnam/accounts/aliquid/statement"
 );
 
 let params = {
@@ -769,7 +778,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://localhost/api/v1/users/et/accounts/officia/statement',
+    'http://localhost/api/v1/users/magnam/accounts/aliquid/statement',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -786,7 +795,7 @@ print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost/api/v1/users/et/accounts/officia/statement'
+url = 'http://localhost/api/v1/users/magnam/accounts/aliquid/statement'
 params = {
   'user_id': '1',
   'account_id': '1',
@@ -799,19 +808,50 @@ headers = {
 response = requests.request('GET', url, headers=headers, params=params)
 response.json()</code></pre>
 <blockquote>
-<p>Example response (200, success):</p>
+<p>Exemplo de resposta (200, Sucesso):</p>
 </blockquote>
-<pre><code class="language-json">{
-    "message": "oi"
+<pre><code class="language-json">
+{
+    "current_page": 1,
+    "data": [
+        {
+            "id": 1,
+            "account_id": 1,
+            "transaction_type_id": 1,
+            "created_at": "2020-12-02T02:07:02.000000Z",
+            "updated_at": "2020-12-02T02:07:02.000000Z",
+            "valor": 50,
+            "tipo": "Depósito"
+        },
+        {
+            "id": 2,
+            "account_id": 1,
+            "transaction_type_id": 1,
+            "created_at": "2020-12-02T02:07:07.000000Z",
+            "updated_at": "2020-12-02T02:07:07.000000Z",
+            "valor": 50,
+            "tipo": "Depósito"
+        },
+    ],
+    "first_page_url": "http://localhost/api/v1/users/1/accounts/1/statement?page=1",
+    "from": 1,
+    "last_page": 1,
+    "last_page_url": "http://localhost/api/v1/users/1/accounts/1/statement?page=1",
+    "next_page_url": null,
+    "path": "http://localhost/api/v1/users/1/accounts/1/statement",
+    "per_page": 50,
+    "prev_page_url": null,
+    "to": 20,
+    "total": 20
 }</code></pre>
 <blockquote>
-<p>Example response (400, user_not_found):</p>
+<p>Exemplo de resposta (400, Usuário não encontrado):</p>
 </blockquote>
 <pre><code class="language-json">{
     "message": "Usuário não encontrado."
 }</code></pre>
 <blockquote>
-<p>Example response (400, account_not_found):</p>
+<p>Exemplo de resposta (400, Conta Não encontrada):</p>
 </blockquote>
 <pre><code class="language-json">{
     "message": "Conta não encontrada."
@@ -856,9 +896,10 @@ Código do usuário</p>
 Código da conta do usuário</p>
 </form><h1>Usuários</h1>
 <p>API para gerenciar usuários</p>
-<h2>Listar usuários</h2>
+<h2>Listar</h2>
+<p>Lista todos os usuários cadastrados no sistema</p>
 <blockquote>
-<p>Example request:</p>
+<p>Exemplo de requisição:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
     -G "http://localhost/api/v1/users" \
@@ -902,372 +943,39 @@ headers = {
 response = requests.request('GET', url, headers=headers)
 response.json()</code></pre>
 <blockquote>
-<p>Example response (500):</p>
+<p>Exemplo de resposta (200, Sucesso):</p>
 </blockquote>
-<pre><code class="language-json">{
-    "message": "SQLSTATE[42S02]: Base table or view not found: 1146 Table 'lumen.users' doesn't exist (SQL: select count(*) as aggregate from `users`)",
-    "exception": "Illuminate\\Database\\QueryException",
-    "file": "\/var\/www\/html\/app\/vendor\/illuminate\/database\/Connection.php",
-    "line": 671,
-    "trace": [
+<pre><code class="language-json">
+{
+    "current_page": 1,
+    "data": [
         {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/database\/Connection.php",
-            "line": 631,
-            "function": "runQueryCallback",
-            "class": "Illuminate\\Database\\Connection",
-            "type": "-&gt;"
+            "id": 1,
+            "cpf": "306.045.290-31",
+            "created_at": "2020-12-02T01:39:47.000000Z",
+            "updated_at": "2020-12-02T01:39:47.000000Z",
+            "nome": "André",
+            "data_nascimento": "01/01/1992"
         },
         {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/database\/Connection.php",
-            "line": 339,
-            "function": "run",
-            "class": "Illuminate\\Database\\Connection",
-            "type": "-&gt;"
+            "id": 2,
+            "cpf": "148.078.190-89",
+            "created_at": "2020-12-02T01:42:47.000000Z",
+            "updated_at": "2020-12-02T01:42:47.000000Z",
+            "nome": "Pedro",
+            "data_nascimento": "01/01/1993"
         },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/database\/Query\/Builder.php",
-            "line": 2260,
-            "function": "select",
-            "class": "Illuminate\\Database\\Connection",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/database\/Query\/Builder.php",
-            "line": 2248,
-            "function": "runSelect",
-            "class": "Illuminate\\Database\\Query\\Builder",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/database\/Query\/Builder.php",
-            "line": 2743,
-            "function": "Illuminate\\Database\\Query\\{closure}",
-            "class": "Illuminate\\Database\\Query\\Builder",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/database\/Query\/Builder.php",
-            "line": 2249,
-            "function": "onceWithColumns",
-            "class": "Illuminate\\Database\\Query\\Builder",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/database\/Query\/Builder.php",
-            "line": 2359,
-            "function": "get",
-            "class": "Illuminate\\Database\\Query\\Builder",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/database\/Query\/Builder.php",
-            "line": 2318,
-            "function": "runPaginationCountQuery",
-            "class": "Illuminate\\Database\\Query\\Builder",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/database\/Eloquent\/Builder.php",
-            "line": 731,
-            "function": "getCountForPagination",
-            "class": "Illuminate\\Database\\Query\\Builder",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/support\/Traits\/ForwardsCalls.php",
-            "line": 23,
-            "function": "paginate",
-            "class": "Illuminate\\Database\\Eloquent\\Builder",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/database\/Eloquent\/Model.php",
-            "line": 1736,
-            "function": "forwardCallTo",
-            "class": "Illuminate\\Database\\Eloquent\\Model",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/database\/Eloquent\/Model.php",
-            "line": 1748,
-            "function": "__call",
-            "class": "Illuminate\\Database\\Eloquent\\Model",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/app\/Http\/Controllers\/UserController.php",
-            "line": 24,
-            "function": "__callStatic",
-            "class": "Illuminate\\Database\\Eloquent\\Model",
-            "type": "::"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/container\/BoundMethod.php",
-            "line": 36,
-            "function": "index",
-            "class": "App\\Http\\Controllers\\UserController",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/container\/Util.php",
-            "line": 37,
-            "function": "Illuminate\\Container\\{closure}",
-            "class": "Illuminate\\Container\\BoundMethod",
-            "type": "::"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/container\/BoundMethod.php",
-            "line": 93,
-            "function": "unwrapIfClosure",
-            "class": "Illuminate\\Container\\Util",
-            "type": "::"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/container\/BoundMethod.php",
-            "line": 37,
-            "function": "callBoundMethod",
-            "class": "Illuminate\\Container\\BoundMethod",
-            "type": "::"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/container\/Container.php",
-            "line": 596,
-            "function": "call",
-            "class": "Illuminate\\Container\\BoundMethod",
-            "type": "::"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/laravel\/lumen-framework\/src\/Concerns\/RoutesRequests.php",
-            "line": 386,
-            "function": "call",
-            "class": "Illuminate\\Container\\Container",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/laravel\/lumen-framework\/src\/Concerns\/RoutesRequests.php",
-            "line": 352,
-            "function": "callControllerCallable",
-            "class": "Laravel\\Lumen\\Application",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/laravel\/lumen-framework\/src\/Concerns\/RoutesRequests.php",
-            "line": 326,
-            "function": "callLumenController",
-            "class": "Laravel\\Lumen\\Application",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/laravel\/lumen-framework\/src\/Concerns\/RoutesRequests.php",
-            "line": 279,
-            "function": "callControllerAction",
-            "class": "Laravel\\Lumen\\Application",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/laravel\/lumen-framework\/src\/Concerns\/RoutesRequests.php",
-            "line": 264,
-            "function": "callActionOnArrayBasedRoute",
-            "class": "Laravel\\Lumen\\Application",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/laravel\/lumen-framework\/src\/Concerns\/RoutesRequests.php",
-            "line": 166,
-            "function": "handleFoundRoute",
-            "class": "Laravel\\Lumen\\Application",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/laravel\/lumen-framework\/src\/Concerns\/RoutesRequests.php",
-            "line": 426,
-            "function": "Laravel\\Lumen\\Concerns\\{closure}",
-            "class": "Laravel\\Lumen\\Application",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/laravel\/lumen-framework\/src\/Concerns\/RoutesRequests.php",
-            "line": 172,
-            "function": "sendThroughPipeline",
-            "class": "Laravel\\Lumen\\Application",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/laravel\/lumen-framework\/src\/Concerns\/RoutesRequests.php",
-            "line": 92,
-            "function": "dispatch",
-            "class": "Laravel\\Lumen\\Application",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/knuckleswtf\/scribe\/src\/Extracting\/Strategies\/Responses\/ResponseCalls.php",
-            "line": 333,
-            "function": "handle",
-            "class": "Laravel\\Lumen\\Application",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/knuckleswtf\/scribe\/src\/Extracting\/Strategies\/Responses\/ResponseCalls.php",
-            "line": 305,
-            "function": "callLaravelOrLumenRoute",
-            "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/knuckleswtf\/scribe\/src\/Extracting\/Strategies\/Responses\/ResponseCalls.php",
-            "line": 76,
-            "function": "makeApiCall",
-            "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/knuckleswtf\/scribe\/src\/Extracting\/Strategies\/Responses\/ResponseCalls.php",
-            "line": 51,
-            "function": "makeResponseCall",
-            "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/knuckleswtf\/scribe\/src\/Extracting\/Strategies\/Responses\/ResponseCalls.php",
-            "line": 41,
-            "function": "makeResponseCallIfEnabledAndNoSuccessResponses",
-            "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/knuckleswtf\/scribe\/src\/Extracting\/Generator.php",
-            "line": 236,
-            "function": "__invoke",
-            "class": "Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/knuckleswtf\/scribe\/src\/Extracting\/Generator.php",
-            "line": 172,
-            "function": "iterateThroughStrategies",
-            "class": "Knuckles\\Scribe\\Extracting\\Generator",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/knuckleswtf\/scribe\/src\/Extracting\/Generator.php",
-            "line": 127,
-            "function": "fetchResponses",
-            "class": "Knuckles\\Scribe\\Extracting\\Generator",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/knuckleswtf\/scribe\/src\/Commands\/GenerateDocumentation.php",
-            "line": 119,
-            "function": "processRoute",
-            "class": "Knuckles\\Scribe\\Extracting\\Generator",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/knuckleswtf\/scribe\/src\/Commands\/GenerateDocumentation.php",
-            "line": 73,
-            "function": "processRoutes",
-            "class": "Knuckles\\Scribe\\Commands\\GenerateDocumentation",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/container\/BoundMethod.php",
-            "line": 36,
-            "function": "handle",
-            "class": "Knuckles\\Scribe\\Commands\\GenerateDocumentation",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/container\/Util.php",
-            "line": 37,
-            "function": "Illuminate\\Container\\{closure}",
-            "class": "Illuminate\\Container\\BoundMethod",
-            "type": "::"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/container\/BoundMethod.php",
-            "line": 93,
-            "function": "unwrapIfClosure",
-            "class": "Illuminate\\Container\\Util",
-            "type": "::"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/container\/BoundMethod.php",
-            "line": 37,
-            "function": "callBoundMethod",
-            "class": "Illuminate\\Container\\BoundMethod",
-            "type": "::"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/container\/Container.php",
-            "line": 596,
-            "function": "call",
-            "class": "Illuminate\\Container\\BoundMethod",
-            "type": "::"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/console\/Command.php",
-            "line": 134,
-            "function": "call",
-            "class": "Illuminate\\Container\\Container",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/symfony\/console\/Command\/Command.php",
-            "line": 258,
-            "function": "execute",
-            "class": "Illuminate\\Console\\Command",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/console\/Command.php",
-            "line": 121,
-            "function": "run",
-            "class": "Symfony\\Component\\Console\\Command\\Command",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/symfony\/console\/Application.php",
-            "line": 920,
-            "function": "run",
-            "class": "Illuminate\\Console\\Command",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/symfony\/console\/Application.php",
-            "line": 266,
-            "function": "doRunCommand",
-            "class": "Symfony\\Component\\Console\\Application",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/symfony\/console\/Application.php",
-            "line": 142,
-            "function": "doRun",
-            "class": "Symfony\\Component\\Console\\Application",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/illuminate\/console\/Application.php",
-            "line": 93,
-            "function": "run",
-            "class": "Symfony\\Component\\Console\\Application",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/vendor\/laravel\/lumen-framework\/src\/Console\/Kernel.php",
-            "line": 116,
-            "function": "run",
-            "class": "Illuminate\\Console\\Application",
-            "type": "-&gt;"
-        },
-        {
-            "file": "\/var\/www\/html\/app\/artisan",
-            "line": 35,
-            "function": "handle",
-            "class": "Laravel\\Lumen\\Console\\Kernel",
-            "type": "-&gt;"
-        }
-    ]
+    ],
+    "first_page_url": "http://localhost/api/v1/users?page=1",
+    "from": 1,
+    "last_page": 1,
+    "last_page_url": "http://localhost/api/v1/users?page=1",
+    "next_page_url": null,
+    "path": "http://localhost/api/v1/users",
+    "per_page": 50,
+    "prev_page_url": null,
+    "to": 1,
+    "total": 1
 }</code></pre>
 <div id="execution-results-GETapi-v1-users" hidden>
     <blockquote>Received response<span id="execution-response-status-GETapi-v1-users"></span>:</blockquote>
@@ -1286,9 +994,10 @@ response.json()</code></pre>
  <b><code>api/v1/users</code></b>
 </p>
 </form>
-<h2>Criar um usuário</h2>
+<h2>Criar</h2>
+<p>Cria um usuário no sistema</p>
 <blockquote>
-<p>Example request:</p>
+<p>Exemplo de requisição:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X POST \
     "http://localhost/api/v1/users" \
@@ -1351,17 +1060,31 @@ headers = {
 response = requests.request('POST', url, headers=headers, json=payload)
 response.json()</code></pre>
 <blockquote>
-<p>Example response (200, Sucesso):</p>
+<p>Exemplo de resposta (200, Sucesso):</p>
 </blockquote>
 <pre><code class="language-json">{
     "id": 4,
     "message": "Usuário criado com sucesso."
 }</code></pre>
 <blockquote>
-<p>Example response (400, Usuário não encontrado):</p>
+<p>Exemplo de resposta (400, Dados inválidos):</p>
 </blockquote>
 <pre><code class="language-json">{
-    "message": "Usuário não encontrado"
+    "cpf": [
+        "O cpf informado é inválido."
+    ]
+}</code></pre>
+<blockquote>
+<p>Exemplo de resposta (400, CPF já existente):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "message": "O CPF informado já foi registrado em outro usuário."
+}</code></pre>
+<blockquote>
+<p>Exemplo de resposta (400, Erro na aplicação):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "message": "Erro ao cadastrar usuário"
 }</code></pre>
 <div id="execution-results-POSTapi-v1-users" hidden>
     <blockquote>Received response<span id="execution-response-status-POSTapi-v1-users"></span>:</blockquote>
@@ -1397,16 +1120,17 @@ CPF do usuário com pontuação.</p>
 Data no formato: d/m/Y.</p>
 
 </form>
-<h2>Buscar um usuário específico</h2>
+<h2>Buscar</h2>
+<p>Busca um usuário específico no sistema através do seu id</p>
 <blockquote>
-<p>Example request:</p>
+<p>Exemplo de requisição:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://localhost/api/v1/users/quia?user_id=1" \
+    -G "http://localhost/api/v1/users/ut?user_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/users/quia"
+    "http://localhost/api/v1/users/ut"
 );
 
 let params = {
@@ -1427,7 +1151,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://localhost/api/v1/users/quia',
+    'http://localhost/api/v1/users/ut',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -1443,7 +1167,7 @@ print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost/api/v1/users/quia'
+url = 'http://localhost/api/v1/users/ut'
 params = {
   'user_id': '1',
 }
@@ -1455,14 +1179,18 @@ headers = {
 response = requests.request('GET', url, headers=headers, params=params)
 response.json()</code></pre>
 <blockquote>
-<p>Example response (200, Sucesso):</p>
+<p>Exemplo de resposta (200, Sucesso):</p>
 </blockquote>
-<pre><code class="language-json">
-{
- "id": 4,
+<pre><code class="language-json">{
+    "id": 1,
+    "cpf": "306.045.290-31",
+    "created_at": "2020-12-02T01:39:47.000000Z",
+    "updated_at": "2020-12-02T01:39:47.000000Z",
+    "nome": "André",
+    "data_nascimento": "01\/01\/1992"
 }</code></pre>
 <blockquote>
-<p>Example response (400, Usuário não encontrado):</p>
+<p>Exemplo de resposta (400, Usuário não encontrado):</p>
 </blockquote>
 <pre><code class="language-json">{
     "message": "Usuário não encontrado"
@@ -1494,18 +1222,19 @@ response.json()</code></pre>
 <b><code>user_id</code></b>&nbsp;&nbsp;<small>integer</small>  &nbsp;
 <input type="number" name="user_id" data-endpoint="GETapi-v1-users--user_id-" data-component="query" required  hidden>
 <br>
-Código do usuário</p>
+Código do usuário.</p>
 </form>
-<h2>Editar um usuário específico</h2>
+<h2>Editar</h2>
+<p>Edita um usuário no sistema</p>
 <blockquote>
-<p>Example request:</p>
+<p>Exemplo de requisição:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X PUT \
-    "http://localhost/api/v1/users/eveniet?user_id=1" \
+    "http://localhost/api/v1/users/sit?user_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/users/eveniet"
+    "http://localhost/api/v1/users/sit"
 );
 
 let params = {
@@ -1526,7 +1255,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;put(
-    'http://localhost/api/v1/users/eveniet',
+    'http://localhost/api/v1/users/sit',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -1542,7 +1271,7 @@ print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost/api/v1/users/eveniet'
+url = 'http://localhost/api/v1/users/sit'
 params = {
   'user_id': '1',
 }
@@ -1554,18 +1283,39 @@ headers = {
 response = requests.request('PUT', url, headers=headers, params=params)
 response.json()</code></pre>
 <blockquote>
-<p>Example response (200, Sucesso):</p>
+<p>Exemplo de resposta (200, Sucesso):</p>
 </blockquote>
 <pre><code class="language-json">
 {
- "user": 4,
- "message": "Usuário editado com sucesso",
+    "user": {
+       "id": 1,
+       "cpf": "306.045.290-31",
+       "created_at": "2020-12-02T01:39:47.000000Z",
+       "updated_at": "2020-12-02T01:39:47.000000Z",
+       "nome": "André",
+       "data_nascimento": "01/01/1992"
+    },
+    "message": "Usuário editado com sucesso",
 }</code></pre>
 <blockquote>
-<p>Example response (400, Usuário não encontrado):</p>
+<p>Exemplo de resposta (400, Usuário não encontrado):</p>
 </blockquote>
 <pre><code class="language-json">{
     "message": "Usuário não encontrado"
+}</code></pre>
+<blockquote>
+<p>Exemplo de resposta (400, Dados inválidos):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "nome": [
+        "O nome informado é inválido."
+    ]
+}</code></pre>
+<blockquote>
+<p>Exemplo de resposta (400, Erro na aplicação):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "message": "Erro ao cadastrar usuário"
 }</code></pre>
 <div id="execution-results-PUTapi-v1-users--user_id-" hidden>
     <blockquote>Received response<span id="execution-response-status-PUTapi-v1-users--user_id-"></span>:</blockquote>
@@ -1594,18 +1344,19 @@ response.json()</code></pre>
 <b><code>user_id</code></b>&nbsp;&nbsp;<small>integer</small>  &nbsp;
 <input type="number" name="user_id" data-endpoint="PUTapi-v1-users--user_id-" data-component="query" required  hidden>
 <br>
-Código do usuário</p>
+Código do usuário.</p>
 </form>
-<h2>Deleta um usuário específico</h2>
+<h2>Deletar</h2>
+<p>Deleta um usuário do sistema</p>
 <blockquote>
-<p>Example request:</p>
+<p>Exemplo de requisição:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X DELETE \
-    "http://localhost/api/v1/users/aut?user_id=1" \
+    "http://localhost/api/v1/users/fugit?user_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/users/aut"
+    "http://localhost/api/v1/users/fugit"
 );
 
 let params = {
@@ -1626,7 +1377,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;delete(
-    'http://localhost/api/v1/users/aut',
+    'http://localhost/api/v1/users/fugit',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -1642,7 +1393,7 @@ print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost/api/v1/users/aut'
+url = 'http://localhost/api/v1/users/fugit'
 params = {
   'user_id': '1',
 }
@@ -1654,14 +1405,14 @@ headers = {
 response = requests.request('DELETE', url, headers=headers, params=params)
 response.json()</code></pre>
 <blockquote>
-<p>Example response (200, Sucesso):</p>
+<p>Exemplo de resposta (200, Sucesso):</p>
 </blockquote>
 <pre><code class="language-json">
 {
- "message": "Usuário removido com sucesso",
+    "message": "Usuário removido com sucesso",
 }</code></pre>
 <blockquote>
-<p>Example response (400, Usuário não encontrado):</p>
+<p>Exemplo de resposta (400, Usuário não encontrado):</p>
 </blockquote>
 <pre><code class="language-json">{
     "message": "Usuário não encontrado"
@@ -1693,7 +1444,7 @@ response.json()</code></pre>
 <b><code>user_id</code></b>&nbsp;&nbsp;<small>integer</small>  &nbsp;
 <input type="number" name="user_id" data-endpoint="DELETEapi-v1-users--user_id-" data-component="query" required  hidden>
 <br>
-Código do usuário</p>
+Código do usuário.</p>
 </form>
     </div>
     <div class="dark-box">
