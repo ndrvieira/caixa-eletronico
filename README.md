@@ -31,7 +31,7 @@ Rode a migration:
 <br/>
 <br/>
 <br/>
-*OBS: A documentação está na raiz do projeto.*
+*OBS: A documentação está no endpoint de entrada "localhost", "/".*
 <br/>
 *OBS2: Em caso de erro de conexão com o mysql, é possível que ele ainda esteja iniciando.*
 
