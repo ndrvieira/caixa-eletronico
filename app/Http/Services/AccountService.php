@@ -14,7 +14,7 @@ class AccountService
         try {
             return Account::findOrFail($id);
         } catch (\Exception $e) {
-            throw new HttpException(400, 'Tipo de conta não encontrado');
+            throw new HttpException(404, 'Tipo de conta não encontrado');
         }
     }
 

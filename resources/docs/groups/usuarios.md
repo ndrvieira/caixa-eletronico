@@ -289,14 +289,14 @@ Busca um usuário específico no sistema através do seu id
 
 ```bash
 curl -X GET \
-    -G "http://localhost/api/v1/users/quia?user_id=1" \
+    -G "http://localhost/api/v1/users/consequatur?user_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/api/v1/users/quia"
+    "http://localhost/api/v1/users/consequatur"
 );
 
 let params = {
@@ -321,7 +321,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->get(
-    'http://localhost/api/v1/users/quia',
+    'http://localhost/api/v1/users/consequatur',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -340,7 +340,7 @@ print_r(json_decode((string) $body));
 import requests
 import json
 
-url = 'http://localhost/api/v1/users/quia'
+url = 'http://localhost/api/v1/users/consequatur'
 params = {
   'user_id': '1',
 }
@@ -366,13 +366,13 @@ response.json()
     "data_nascimento": "01\/01\/1992"
 }
 ```
-> Example response (400, Usuário não encontrado):
+> Example response (404, Usuário não encontrado):
 
 ```json
 
 {
     "error": [
-        "code": 400,
+        "code": 404,
         "message": "Usuário não encontrado"
     ]
 }
@@ -417,7 +417,7 @@ Edita um usuário no sistema
 
 ```bash
 curl -X PATCH \
-    "http://localhost/api/v1/users/labore?user_id=1" \
+    "http://localhost/api/v1/users/eligendi?user_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"nome":"Andr\u00e9","data_nascimento":"01\/01\/2001"}'
@@ -426,7 +426,7 @@ curl -X PATCH \
 
 ```javascript
 const url = new URL(
-    "http://localhost/api/v1/users/labore"
+    "http://localhost/api/v1/users/eligendi"
 );
 
 let params = {
@@ -456,7 +456,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->patch(
-    'http://localhost/api/v1/users/labore',
+    'http://localhost/api/v1/users/eligendi',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -479,7 +479,7 @@ print_r(json_decode((string) $body));
 import requests
 import json
 
-url = 'http://localhost/api/v1/users/labore'
+url = 'http://localhost/api/v1/users/eligendi'
 payload = {
     "nome": "Andr\u00e9",
     "data_nascimento": "01\/01\/2001"
@@ -526,13 +526,13 @@ response.json()
     ]
 }
 ```
-> Example response (400, Usuário não encontrado):
+> Example response (404, Usuário não encontrado):
 
 ```json
 
 {
     "error": [
-        "code": 400,
+        "code": 404,
         "message": "Usuário não encontrado"
     ]
 }
@@ -600,14 +600,14 @@ Deleta um usuário do sistema
 
 ```bash
 curl -X DELETE \
-    "http://localhost/api/v1/users/expedita?user_id=1" \
+    "http://localhost/api/v1/users/optio?user_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/api/v1/users/expedita"
+    "http://localhost/api/v1/users/optio"
 );
 
 let params = {
@@ -632,7 +632,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->delete(
-    'http://localhost/api/v1/users/expedita',
+    'http://localhost/api/v1/users/optio',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -651,7 +651,7 @@ print_r(json_decode((string) $body));
 import requests
 import json
 
-url = 'http://localhost/api/v1/users/expedita'
+url = 'http://localhost/api/v1/users/optio'
 params = {
   'user_id': '1',
 }
@@ -673,13 +673,13 @@ response.json()
     "message": "Usuário removido com sucesso",
 }
 ```
-> Example response (400, Usuário não encontrado):
+> Example response (404, Usuário não encontrado):
 
 ```json
 
 {
     "error": [
-        "code": 400,
+        "code": 404,
         "message": "Usuário não encontrado"
     ]
 }

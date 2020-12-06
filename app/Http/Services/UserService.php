@@ -13,7 +13,7 @@ class UserService
         try {
             return User::findOrFail($id);
         } catch (\Exception $e) {
-            throw new HttpException(400, 'Usuário não encontrado', null, [], 400);
+            throw new HttpException(404, 'Usuário não encontrado', null, [], 404);
         }
     }
 

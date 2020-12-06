@@ -134,9 +134,9 @@ class UserController extends Controller
      *     "nome": "André",
      *     "data_nascimento": "01/01/1992"
      * }
-     * @response status=400 scenario="Usuário não encontrado" {
+     * @response status=404 scenario="Usuário não encontrado" {
      *     "error": [
-     *         "code": 400,
+     *         "code": 404,
      *         "message": "Usuário não encontrado"
      *     ]
      * }
@@ -174,9 +174,9 @@ class UserController extends Controller
      *         ]
      *     ]
      * }
-     * @response status=400 scenario="Usuário não encontrado" {
+     * @response status=404 scenario="Usuário não encontrado" {
      *     "error": [
-     *         "code": 400,
+     *         "code": 404,
      *         "message": "Usuário não encontrado"
      *     ]
      * }
@@ -221,9 +221,9 @@ class UserController extends Controller
      * @response scenario=Sucesso {
      *     "message": "Usuário removido com sucesso",
      * }
-     * @response status=400 scenario="Usuário não encontrado" {
+     * @response status=404 scenario="Usuário não encontrado" {
      *     "error": [
-     *         "code": 400,
+     *         "code": 404,
      *         "message": "Usuário não encontrado"
      *     ]
      * }

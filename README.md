@@ -8,8 +8,8 @@ Simulador de caixa eletrônico.
 `git clone git@github.com:ndrvieira/caixa-eletronico.git`
 <br/>
 <br/>
-#### Suba o docker (Obs: O banco não está persistido):
-`docker-compose up --build -d`
+#### Suba o docker:
+`docker-compose up -d`
 <br/>
 <br/>
 #### Instalando dependências e rodando migration:
@@ -34,8 +34,6 @@ Rode a migration:
 *OBS: A documentação está na raiz do projeto.*
 <br/>
 *OBS2: Em caso de erro de conexão com o mysql, é possível que ele ainda esteja iniciando.*
-<br/>
-*OBS3: Como o banco não está persistido, toda vez que derrubar o docker será necessário rodar o migrate.*
 
 ## License
 

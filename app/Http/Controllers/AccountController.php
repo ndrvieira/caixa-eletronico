@@ -41,9 +41,9 @@ class AccountController extends Controller
      *         "tipo": "poupança",
      *     }
      * ]
-     * @response status=400 scenario="Usuário não encontrado" {
+     * @response status=404 scenario="Usuário não encontrado" {
      *     "error": [
-     *         "code": 400,
+     *         "code": 404,
      *         "message": "Usuário não encontrado"
      *     ]
      * }
@@ -81,16 +81,16 @@ class AccountController extends Controller
      *         ]
      *     ]
      * }
-     * @response status=400 scenario="Usuário não encontrado" {
+     * @response status=404 scenario="Usuário não encontrado" {
      *     "error": [
-     *         "code": 400,
+     *         "code": 404,
      *         "message": "Usuário não encontrado"
      *     ]
      * }
-     * @response status=400 scenario="Tipo de conta inexistente" {
+     * @response status=400 scenario="Tipo de conta inválido" {
      *     "error": [
      *         "code": 400,
-     *         "message": "Tipo de conta não encontrado."
+     *         "message": "Tipo de conta inválido."
      *     ]
      * }
      * @response status=409 scenario="Usuário já possui conta deste tipo" {
@@ -154,15 +154,15 @@ class AccountController extends Controller
      *         ]
      *     ]
      * }
-     * @response status=400 scenario="Usuário não encontrado" {
+     * @response status=404 scenario="Usuário não encontrado" {
      *     "error": [
-     *         "code": 400,
+     *         "code": 404,
      *         "message": "Usuário não encontrado"
      *     ]
      * }
-     * @response status=400 scenario="Conta não encontrada" {
+     * @response status=404 scenario="Conta não encontrada" {
      *     "error": [
-     *         "code": 400,
+     *         "code": 404,
      *         "message": "Conta não encontrada."
      *     ]
      * }
@@ -225,15 +225,15 @@ class AccountController extends Controller
      *     "saldo": 50,
      *     "message": "Saque no valor de R$ 150,00 efetuado com sucesso."
      * }
-     * @response status=400 scenario="Usuário não encontrado" {
+     * @response status=404 scenario="Usuário não encontrado" {
      *     "error": [
-     *         "code": 400,
+     *         "code": 404,
      *         "message": "Usuário não encontrado"
      *     ]
      * }
-     * @response status=400 scenario="Conta não encontrada" {
+     * @response status=404 scenario="Conta não encontrada" {
      *     "error": [
-     *         "code": 400,
+     *         "code": 404,
      *         "message": "Conta não encontrada."
      *     ]
      * }
@@ -331,15 +331,15 @@ class AccountController extends Controller
      *     "to": 20,
      *     "total": 20
      * }
-     * @response status=400 scenario="Usuário não encontrado" {
+     * @response status=404 scenario="Usuário não encontrado" {
      *     "error": [
-     *         "code": 400,
+     *         "code": 404,
      *         "message": "Usuário não encontrado"
      *     ]
      * }
-     * @response status=400 scenario="Conta não encontrada" {
+     * @response status=404 scenario="Conta não encontrada" {
      *     "error": [
-     *         "code": 400,
+     *         "code": 404,
      *         "message": "Conta não encontrada."
      *     ]
      * }

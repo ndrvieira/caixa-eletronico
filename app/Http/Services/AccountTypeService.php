@@ -12,16 +12,19 @@ class AccountTypeService
         try {
             return AccountType::findOrFail($id);
         } catch (\Exception $e) {
-            throw new HttpException(400, 'Tipo de conta não encontrado', null, [], 400);
+            throw new HttpException(400, 'Tipo de conta inválido', null, [], 400);
         }
     }
 
     public function customFindOrFailByName(string $name)
     {
-        try {
-            return AccountType::where('name', $name)->first();
-        } catch (\Exception $e) {
-            throw new HttpException(400, 'Tipo de conta não encontrado', null, [], 400);
+        $accountType = AccountType::where('name', $name)->first();
+        if (empty($accountType)) {
+            if (empty(AccountType::all()->toArray())) {
+                throw new HttpException(500, 'Nenhum tipo de conta foi cadastrado no sistema', null, [], 500);
+            }
+            throw new HttpException(400, 'Tipo de conta inválido', null, [], 400);
         }
+        return $accountType;
     }
 }

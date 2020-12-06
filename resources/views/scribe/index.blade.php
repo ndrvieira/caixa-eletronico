@@ -66,11 +66,11 @@ Você poderá selecionar a linguagem no canto superior direito desta tela.</asid
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://localhost/api/v1/users/ipsa/accounts?user_id=1" \
+    -G "http://localhost/api/v1/users/dignissimos/accounts?user_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/users/ipsa/accounts"
+    "http://localhost/api/v1/users/dignissimos/accounts"
 );
 
 let params = {
@@ -91,7 +91,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://localhost/api/v1/users/ipsa/accounts',
+    'http://localhost/api/v1/users/dignissimos/accounts',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -107,7 +107,7 @@ print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost/api/v1/users/ipsa/accounts'
+url = 'http://localhost/api/v1/users/dignissimos/accounts'
 params = {
   'user_id': '1',
 }
@@ -139,12 +139,12 @@ response.json()</code></pre>
     }
 ]</code></pre>
 <blockquote>
-<p>Example response (400, Usuário não encontrado):</p>
+<p>Example response (404, Usuário não encontrado):</p>
 </blockquote>
 <pre><code class="language-json">
 {
     "error": [
-        "code": 400,
+        "code": 404,
         "message": "Usuário não encontrado"
     ]
 }</code></pre>
@@ -183,13 +183,13 @@ Código do usuário</p>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X POST \
-    "http://localhost/api/v1/users/atque/accounts?user_id=1" \
+    "http://localhost/api/v1/users/impedit/accounts?user_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"tipo":"poupan\u00e7a","saldo":500}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/users/atque/accounts"
+    "http://localhost/api/v1/users/impedit/accounts"
 );
 
 let params = {
@@ -216,7 +216,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;post(
-    'http://localhost/api/v1/users/atque/accounts',
+    'http://localhost/api/v1/users/impedit/accounts',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -236,7 +236,7 @@ print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost/api/v1/users/atque/accounts'
+url = 'http://localhost/api/v1/users/impedit/accounts'
 payload = {
     "tipo": "poupan\u00e7a",
     "saldo": 500
@@ -273,23 +273,23 @@ response.json()</code></pre>
     ]
 }</code></pre>
 <blockquote>
-<p>Example response (400, Usuário não encontrado):</p>
+<p>Example response (404, Usuário não encontrado):</p>
 </blockquote>
 <pre><code class="language-json">
 {
     "error": [
-        "code": 400,
+        "code": 404,
         "message": "Usuário não encontrado"
     ]
 }</code></pre>
 <blockquote>
-<p>Example response (400, Tipo de conta inexistente):</p>
+<p>Example response (400, Tipo de conta inválido):</p>
 </blockquote>
 <pre><code class="language-json">
 {
     "error": [
         "code": 400,
-        "message": "Tipo de conta não encontrado."
+        "message": "Tipo de conta inválido."
     ]
 }</code></pre>
 <blockquote>
@@ -349,13 +349,13 @@ Saldo inicial da conta, somente valores positivos, se omitido será 0.</p>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X POST \
-    "http://localhost/api/v1/users/provident/accounts/quia/deposit?user_id=1&amp;account_id=1" \
+    "http://localhost/api/v1/users/aut/accounts/occaecati/deposit?user_id=1&amp;account_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"valor":500}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/users/provident/accounts/quia/deposit"
+    "http://localhost/api/v1/users/aut/accounts/occaecati/deposit"
 );
 
 let params = {
@@ -382,7 +382,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;post(
-    'http://localhost/api/v1/users/provident/accounts/quia/deposit',
+    'http://localhost/api/v1/users/aut/accounts/occaecati/deposit',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -402,7 +402,7 @@ print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost/api/v1/users/provident/accounts/quia/deposit'
+url = 'http://localhost/api/v1/users/aut/accounts/occaecati/deposit'
 payload = {
     "valor": 500
 }
@@ -439,22 +439,22 @@ response.json()</code></pre>
     ]
 }</code></pre>
 <blockquote>
-<p>Example response (400, Usuário não encontrado):</p>
+<p>Example response (404, Usuário não encontrado):</p>
 </blockquote>
 <pre><code class="language-json">
 {
     "error": [
-        "code": 400,
+        "code": 404,
         "message": "Usuário não encontrado"
     ]
 }</code></pre>
 <blockquote>
-<p>Example response (400, Conta não encontrada):</p>
+<p>Example response (404, Conta não encontrada):</p>
 </blockquote>
 <pre><code class="language-json">
 {
     "error": [
-        "code": 400,
+        "code": 404,
         "message": "Conta não encontrada."
     ]
 }</code></pre>
@@ -531,13 +531,13 @@ a quantidade de cada nota que deve retornar</p>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X POST \
-    "http://localhost/api/v1/users/molestiae/accounts/quod/withdraw?user_id=1&amp;account_id=1" \
+    "http://localhost/api/v1/users/et/accounts/ad/withdraw?user_id=1&amp;account_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"valor":150}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/users/molestiae/accounts/quod/withdraw"
+    "http://localhost/api/v1/users/et/accounts/ad/withdraw"
 );
 
 let params = {
@@ -564,7 +564,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;post(
-    'http://localhost/api/v1/users/molestiae/accounts/quod/withdraw',
+    'http://localhost/api/v1/users/et/accounts/ad/withdraw',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -584,7 +584,7 @@ print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost/api/v1/users/molestiae/accounts/quod/withdraw'
+url = 'http://localhost/api/v1/users/et/accounts/ad/withdraw'
 payload = {
     "valor": 150
 }
@@ -613,22 +613,22 @@ response.json()</code></pre>
     "message": "Saque no valor de R$ 150,00 efetuado com sucesso."
 }</code></pre>
 <blockquote>
-<p>Example response (400, Usuário não encontrado):</p>
+<p>Example response (404, Usuário não encontrado):</p>
 </blockquote>
 <pre><code class="language-json">
 {
     "error": [
-        "code": 400,
+        "code": 404,
         "message": "Usuário não encontrado"
     ]
 }</code></pre>
 <blockquote>
-<p>Example response (400, Conta não encontrada):</p>
+<p>Example response (404, Conta não encontrada):</p>
 </blockquote>
 <pre><code class="language-json">
 {
     "error": [
-        "code": 400,
+        "code": 404,
         "message": "Conta não encontrada."
     ]
 }</code></pre>
@@ -724,11 +724,11 @@ Valor do saque.</p>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://localhost/api/v1/users/et/accounts/repellendus/statement?user_id=1&amp;account_id=1" \
+    -G "http://localhost/api/v1/users/omnis/accounts/provident/statement?user_id=1&amp;account_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/users/et/accounts/repellendus/statement"
+    "http://localhost/api/v1/users/omnis/accounts/provident/statement"
 );
 
 let params = {
@@ -750,7 +750,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://localhost/api/v1/users/et/accounts/repellendus/statement',
+    'http://localhost/api/v1/users/omnis/accounts/provident/statement',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -767,7 +767,7 @@ print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost/api/v1/users/et/accounts/repellendus/statement'
+url = 'http://localhost/api/v1/users/omnis/accounts/provident/statement'
 params = {
   'user_id': '1',
   'account_id': '1',
@@ -817,22 +817,22 @@ response.json()</code></pre>
     "total": 20
 }</code></pre>
 <blockquote>
-<p>Example response (400, Usuário não encontrado):</p>
+<p>Example response (404, Usuário não encontrado):</p>
 </blockquote>
 <pre><code class="language-json">
 {
     "error": [
-        "code": 400,
+        "code": 404,
         "message": "Usuário não encontrado"
     ]
 }</code></pre>
 <blockquote>
-<p>Example response (400, Conta não encontrada):</p>
+<p>Example response (404, Conta não encontrada):</p>
 </blockquote>
 <pre><code class="language-json">
 {
     "error": [
-        "code": 400,
+        "code": 404,
         "message": "Conta não encontrada."
     ]
 }</code></pre>
@@ -1120,11 +1120,11 @@ Data no formato: d/m/Y.</p>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://localhost/api/v1/users/quia?user_id=1" \
+    -G "http://localhost/api/v1/users/consequatur?user_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/users/quia"
+    "http://localhost/api/v1/users/consequatur"
 );
 
 let params = {
@@ -1145,7 +1145,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://localhost/api/v1/users/quia',
+    'http://localhost/api/v1/users/consequatur',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -1161,7 +1161,7 @@ print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost/api/v1/users/quia'
+url = 'http://localhost/api/v1/users/consequatur'
 params = {
   'user_id': '1',
 }
@@ -1184,12 +1184,12 @@ response.json()</code></pre>
     "data_nascimento": "01\/01\/1992"
 }</code></pre>
 <blockquote>
-<p>Example response (400, Usuário não encontrado):</p>
+<p>Example response (404, Usuário não encontrado):</p>
 </blockquote>
 <pre><code class="language-json">
 {
     "error": [
-        "code": 400,
+        "code": 404,
         "message": "Usuário não encontrado"
     ]
 }</code></pre>
@@ -1228,13 +1228,13 @@ Código do usuário.</p>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X PATCH \
-    "http://localhost/api/v1/users/labore?user_id=1" \
+    "http://localhost/api/v1/users/eligendi?user_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"nome":"Andr\u00e9","data_nascimento":"01\/01\/2001"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/users/labore"
+    "http://localhost/api/v1/users/eligendi"
 );
 
 let params = {
@@ -1261,7 +1261,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;patch(
-    'http://localhost/api/v1/users/labore',
+    'http://localhost/api/v1/users/eligendi',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -1281,7 +1281,7 @@ print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost/api/v1/users/labore'
+url = 'http://localhost/api/v1/users/eligendi'
 payload = {
     "nome": "Andr\u00e9",
     "data_nascimento": "01\/01\/2001"
@@ -1324,12 +1324,12 @@ response.json()</code></pre>
     ]
 }</code></pre>
 <blockquote>
-<p>Example response (400, Usuário não encontrado):</p>
+<p>Example response (404, Usuário não encontrado):</p>
 </blockquote>
 <pre><code class="language-json">
 {
     "error": [
-        "code": 400,
+        "code": 404,
         "message": "Usuário não encontrado"
     ]
 }</code></pre>
@@ -1390,11 +1390,11 @@ Data no formato: d/m/Y.</p>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X DELETE \
-    "http://localhost/api/v1/users/expedita?user_id=1" \
+    "http://localhost/api/v1/users/optio?user_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/users/expedita"
+    "http://localhost/api/v1/users/optio"
 );
 
 let params = {
@@ -1415,7 +1415,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;delete(
-    'http://localhost/api/v1/users/expedita',
+    'http://localhost/api/v1/users/optio',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -1431,7 +1431,7 @@ print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost/api/v1/users/expedita'
+url = 'http://localhost/api/v1/users/optio'
 params = {
   'user_id': '1',
 }
@@ -1450,12 +1450,12 @@ response.json()</code></pre>
     "message": "Usuário removido com sucesso",
 }</code></pre>
 <blockquote>
-<p>Example response (400, Usuário não encontrado):</p>
+<p>Example response (404, Usuário não encontrado):</p>
 </blockquote>
 <pre><code class="language-json">
 {
     "error": [
-        "code": 400,
+        "code": 404,
         "message": "Usuário não encontrado"
     ]
 }</code></pre>

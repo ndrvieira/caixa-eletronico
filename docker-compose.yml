@@ -17,6 +17,8 @@ services:
         ipv4_address: 10.1.0.100
       web:
       default:
+    volumes:
+      - dbdata:/var/lib/mysql
 
   nginx:
     container_name: nginx
@@ -65,3 +67,6 @@ networks:
       driver: default
       config:
         - subnet: 10.1.0.0/24
+
+volumes:
+  dbdata:
