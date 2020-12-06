@@ -3,6 +3,7 @@
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use App\User;
+use Illuminate\Support\Facades\DB;
 
 class UserTest extends TestCase
 {
@@ -156,6 +157,23 @@ class UserTest extends TestCase
                 'nome',
                 'cpf',
                 'data_nascimento'
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function exibe_usuario_inexistente()
+    {
+        $last_user = DB::table('users')->latest()->first();
+        $last_plus_one = $last_user->id + 1;
+        $this->get($this->api_prefix . '/' . $last_plus_one)
+            ->seeStatusCode(404)
+            ->seeJsonStructure([
+                'error' => [
+                    'code',
+                    'message'
+                ]
             ]);
     }
 
