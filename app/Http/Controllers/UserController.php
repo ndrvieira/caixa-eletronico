@@ -8,6 +8,7 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Helpers\DateHelper;
 use Illuminate\Database\QueryException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * @group Usuários
@@ -70,22 +71,33 @@ class UserController extends Controller
      *     "id": 4,
      *     "message": "Usuário criado com sucesso."
      * }
-     * @response status=400 scenario="Dados inválidos" {
-     *     "cpf": [
-     *        "O cpf informado é inválido."
+     * @response status=422 scenario="Dados inválidos" {
+     *     "error": [
+     *         "code": 422,
+     *         "message": [
+     *             "nome": [
+     *                 "O campo nome é obrigatório."
+     *             ]
+     *         ]
      *     ]
      * }
-     * @response status=400 scenario="CPF já existente" {
-     *     "message": "O CPF informado já foi registrado em outro usuário."
+     * @response status=409 scenario="CPF existente" {
+     *     "error": [
+     *         "code": 409,
+     *         "message": "O CPF informado já foi registrado em outro usuário."
+     *     ]
      * }
-     * @response status=400 scenario="Erro na aplicação" {
-     *     "message": "Erro ao cadastrar usuário"
+     * @response status=500 scenario="Erro na aplicação" {
+     *     "error": [
+     *         "code": 500,
+     *         "message": "Erro ao cadastrar usuário"
+     *     ]
      * }
 	 */
     public function create(Request $request)
     {
         $this->validate($request, [
-            'nome' => 'required|max:100',
+            'nome' => 'required|min:1|max:100',
             'cpf' => new CPFValidation,
             'data_nascimento' => 'required|date_format:d/m/Y'
         ]);
@@ -98,11 +110,11 @@ class UserController extends Controller
             $user->save();
         } catch (QueryException $e) {
             if ($e->getCode() == 23000) {
-                abort(400, 'O CPF informado já foi registrado em outro usuário.');
+                throw new HttpException(409, 'O CPF informado já foi registrado em outro usuário.', null, [], 409);
             }
-            abort(400, 'Erro ao cadastrar usuário.');
+            throw new HttpException(500, 'Erro ao cadastrar usuário.', null, [], 500);
         } catch (\Exception $e) {
-            abort(400, 'Erro ao cadastrar usuário.');
+            throw new HttpException(500, 'Erro ao cadastrar usuário.', null, [], 500);
         }
 
         return response()->json(['id' => $user->id, 'message' => 'Usuário criado com sucesso'], 201);
@@ -123,7 +135,10 @@ class UserController extends Controller
      *     "data_nascimento": "01/01/1992"
      * }
      * @response status=400 scenario="Usuário não encontrado" {
-     *     "message": "Usuário não encontrado"
+     *     "error": [
+     *         "code": 400,
+     *         "message": "Usuário não encontrado"
+     *     ]
      * }
 	 */
     public function show(int $user_id)
@@ -133,32 +148,43 @@ class UserController extends Controller
     }
 
     /**
-	 * Editar
+     * Editar
      * 
      * Edita um usuário no sistema
 	 *
      * @queryParam user_id integer required Código do usuário. Example: 1
+     * @bodyParam nome string Nome do usuário. Example: André
+     * @bodyParam data_nascimento string Data no formato: d/m/Y. Example: 01/01/2001
      * @response scenario=Sucesso {
      *     "user": {
      *        "id": 1,
      *        "cpf": "306.045.290-31",
-     *        "created_at": "2020-12-02T01:39:47.000000Z",
-     *        "updated_at": "2020-12-02T01:39:47.000000Z",
      *        "nome": "André",
      *        "data_nascimento": "01/01/1992"
      *     },
      *     "message": "Usuário editado com sucesso",
      * }
-     * @response status=400 scenario="Usuário não encontrado" {
-     *     "message": "Usuário não encontrado"
-     * }
-     * @response status=400 scenario="Dados inválidos" {
-     *     "nome": [
-     *        "O nome informado é inválido."
+     * @response status=422 scenario="Dados inválidos" {
+     *     "error": [
+     *         "code": 422,
+     *         "message": [
+     *             "data_nascimento": [
+     *                 "A data informada para o campo data nascimento não respeita o formato d/m/Y."
+     *             ]
+     *         ]
      *     ]
      * }
-     * @response status=400 scenario="Erro na aplicação" {
-     *     "message": "Erro ao cadastrar usuário"
+     * @response status=400 scenario="Usuário não encontrado" {
+     *     "error": [
+     *         "code": 400,
+     *         "message": "Usuário não encontrado"
+     *     ]
+     * }
+     * @response status=500 scenario="Erro na aplicação" {
+     *     "error": [
+     *         "code": 500,
+     *         "message": "Erro ao editar usuário"
+     *     ]
      * }
 	 */
     public function edit(int $user_id, Request $request)
@@ -166,7 +192,7 @@ class UserController extends Controller
         $user = (new UserService())->customFindOrFail($user_id);
 
         $this->validate($request, [
-            'nome' => 'max:100',
+            'nome' => 'string|max:100',
             'data_nascimento' => 'date_format:d/m/Y'
         ]);
 
@@ -180,7 +206,7 @@ class UserController extends Controller
         try {
             $user->save();
         } catch (\Exception $e) {
-            abort(400, 'Erro ao cadastrar usuário.');
+            throw new HttpException(500, 'Erro ao editar usuário.', null, [], 500);
         }
 
         return response()->json(['user' => $user, 'message' => 'Usuário editado com sucesso'], 200);
@@ -196,7 +222,10 @@ class UserController extends Controller
      *     "message": "Usuário removido com sucesso",
      * }
      * @response status=400 scenario="Usuário não encontrado" {
-     *     "message": "Usuário não encontrado"
+     *     "error": [
+     *         "code": 400,
+     *         "message": "Usuário não encontrado"
+     *     ]
      * }
 	 */
     public function delete($user_id)

@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int account_type_id
  * @property int amount
  * @property int busy
+ * @property string created_at
+ * @property string updated_at
  */
 class Account extends Model
 {
@@ -17,7 +19,9 @@ class Account extends Model
     protected $hidden = [
         'amount',
         'busy',
-        'accountType'
+        'accountType',
+        'created_at',
+        'updated_at'
     ];
 
     protected $appends = ['saldo', 'tipo'];

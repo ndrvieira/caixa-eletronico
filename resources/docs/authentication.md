@@ -1,3 +1,3 @@
-# Autenticação
+# Requisições para autenticação
 
-Essa API não utiliza autenticação.
+Essa API não usa autenticação.

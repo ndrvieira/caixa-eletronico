@@ -13,15 +13,18 @@ class UserService
         try {
             return User::findOrFail($id);
         } catch (\Exception $e) {
-            throw new HttpException(400, 'Usuário não encontrado');
+            throw new HttpException(400, 'Usuário não encontrado', null, [], 400);
         }
     }
 
     public function hasAccountOfType(User $user, AccountType $accountType)
     {
-        $hasAccount = $user->whereHas('accounts', function($query) use ($accountType) {
-           $query->where('account_type_id', $accountType->id);
-        })->first();
-        return !empty($hasAccount);
+        $userAccounts = $user->accounts()->get();
+        foreach ($userAccounts as $account) {
+            if ($account->account_type_id === $accountType->id) {
+                return true;
+            }
+        }
+        return false;
     }
 }

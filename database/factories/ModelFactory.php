@@ -4,6 +4,7 @@
 
 use App\User;
 use App\Models\Account;
+use App\Models\AccountType;
 use Faker\Generator as Faker;
 use Faker\Provider\pt_BR\Person as FakerBr;
 use Faker\Provider\DateTime as FakerDate;
@@ -19,22 +20,20 @@ use Faker\Provider\DateTime as FakerDate;
 |
 */
 
-$factory->define(User::class, function (Faker $faker, FakerBr $fakerBr, FakerDate $fakerDate) {
+$factory->define(User::class, function (Faker $faker) {
+    $faker->addProvider(new FakerBr($faker));
+    $faker->addProvider(new FakerDate($faker));
     return [
         'name' => $faker->name,
-        'email' => $faker->email,
-        'cpf' => $fakerBr->cpf,
-        'password' => $faker->password(4, 10),
-        'birth_date' => $fakerDate->date('Y-m-d', 'now')
+        'cpf' => $faker->unique()->cpf,
+        'birth_date' => $faker->date('Y-m-d', 'now')
     ];
 });
 
-$factory->define(Account::class, function (Faker $faker, FakerBr $fakerBr, FakerDate $fakerDate) {
+$factory->define(Account::class, function (Faker $faker) {
     return [
-        'name' => $faker->name,
-        'email' => $faker->email,
-        'cpf' => $fakerBr->cpf,
-        'password' => $faker->password(4, 10),
-        'birth_date' => $fakerDate->date('Y-m-d', 'now')
+        'user_id' => $faker->randomElement(User::pluck('id')),
+        'account_type_id' => $faker->randomElement(AccountType::pluck('id')),
+        'amount' => $faker->numberBetween(10, 50000)
     ];
 });

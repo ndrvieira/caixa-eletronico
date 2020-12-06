@@ -42,7 +42,10 @@ class AccountController extends Controller
      *     }
      * ]
      * @response status=400 scenario="Usuário não encontrado" {
-     *     "message": "Usuário não encontrado."
+     *     "error": [
+     *         "code": 400,
+     *         "message": "Usuário não encontrado"
+     *     ]
      * }
      *
      * @param int $user_id
@@ -50,7 +53,9 @@ class AccountController extends Controller
      */
     public function index(int $user_id)
     {
-        $accounts = Account::where('user_id', $user_id)->paginate(50);
+        (new UserService())->customFindOrFail($user_id);
+
+        $accounts = Account::where('user_id', $user_id)->get();
         return response()->json($accounts, 200);
     }
 
@@ -61,19 +66,38 @@ class AccountController extends Controller
 	 *
      * @queryParam user_id integer required Código do usuário Example: 1
 	 * @bodyParam tipo string required Tipo da conta (corrente ou poupança). Example: poupança
-     * @bodyParam saldo integer required Saldo inicial da conta, somente valores positivos. Example: 500
+     * @bodyParam saldo integer Saldo inicial da conta, somente valores positivos, se omitido será 0. Example: 500
      * @response scenario=Sucesso {
      *    "id": 5,
      *    "message": "Conta criada com sucesso."
      * }
+     * @response status=422 scenario="Dados inválidos" {
+     *     "error": [
+     *         "code": 422,
+     *         "message": [
+     *             "tipo": [
+     *                 "O campo tipo é obrigatório."
+     *             ]
+     *         ]
+     *     ]
+     * }
      * @response status=400 scenario="Usuário não encontrado" {
-     *     "message": "Usuário não encontrado."
+     *     "error": [
+     *         "code": 400,
+     *         "message": "Usuário não encontrado"
+     *     ]
      * }
      * @response status=400 scenario="Tipo de conta inexistente" {
-     *     "message": "Tipo de conta não encontrado."
+     *     "error": [
+     *         "code": 400,
+     *         "message": "Tipo de conta não encontrado."
+     *     ]
      * }
-     * @response status=400 scenario="Usuário já possui conta" {
-     *     "message": "O usuário já possui uma conta do tipo informado"
+     * @response status=409 scenario="Usuário já possui conta deste tipo" {
+     *     "error": [
+     *         "code": 409,
+     *         "message": "O usuário já possui uma conta do tipo informado."
+     *     ]
      * }
      *
      * @param int $user_id
@@ -84,13 +108,17 @@ class AccountController extends Controller
     public function create(int $user_id, Request $request)
     {
         $this->validate($request, [
-            'tipo' => 'required',
-            'saldo' => 'required|integer|min:0'
+            'tipo' => [
+                'required',
+                'string',
+                'regex:/^corrente$|^poupança$/',
+            ],
+            'saldo' => 'integer|between:0,9223372036854775807'
         ]);
 
-        /** @var User $account */
+        /** @var User $user */
         $user = (new UserService())->customFindOrFail($user_id);
-        /** @var AccountType $account */
+        /** @var AccountType $tipo */
         $tipo = (new AccountTypeService())->customFindOrFailByName($request->tipo);
 
         (new AccountService())->validateCreation($user, $tipo);
@@ -116,14 +144,39 @@ class AccountController extends Controller
      *     "saldo": 50,
      *     "message": "Depósito no valor de R$ 500,00 efetuado com sucesso."
      * }
+     * @response status=422 scenario="Dados inválidos" {
+     *     "error": [
+     *         "code": 422,
+     *         "message": [
+     *             "valor": [
+     *                 "O campo valor é obrigatório."
+     *             ]
+     *         ]
+     *     ]
+     * }
      * @response status=400 scenario="Usuário não encontrado" {
-     *     "message": "Usuário não encontrado."
+     *     "error": [
+     *         "code": 400,
+     *         "message": "Usuário não encontrado"
+     *     ]
      * }
      * @response status=400 scenario="Conta não encontrada" {
-     *     "message": "Conta não encontrada."
+     *     "error": [
+     *         "code": 400,
+     *         "message": "Conta não encontrada."
+     *     ]
+     * }
+     * @response status=500 scenario="Tipo de transação não encontrada" {
+     *     "error": [
+     *         "code": 500,
+     *         "message": "Tipo de transação não encontrada."
+     *     ]
      * }
      * @response status=503 scenario="Caixa ocupado" {
-     *     "message": "Caixa ocupado, por favor tente mais tarde"
+     *     "error": [
+     *         "code": 503,
+     *         "message": "Caixa ocupado, por favor tente mais tarde."
+     *     ]
      * }
      *
      * @param int $user_id
@@ -135,7 +188,7 @@ class AccountController extends Controller
     public function deposit(int $user_id, int $account_id, Request $request)
     {
         $this->validate($request, [
-            'valor' => 'required|integer|min:0'
+            'valor' => 'required|integer|min:1'
         ]);
 
         (new UserService())->customFindOrFail($user_id);
@@ -162,7 +215,7 @@ class AccountController extends Controller
 	 *
      * @queryParam user_id integer required Código do usuário Example: 1
      * @queryParam account_id integer required Código da conta do usuário Example: 1
-     * @bodyParam valor integer required Valor do saque. Example: 500
+     * @bodyParam valor integer required Valor do saque. Example: 150
      * @response scenario=Sucesso {
      *     "notas" => [
      *        "100": 1,
@@ -170,25 +223,43 @@ class AccountController extends Controller
      *        "20": 0
      *     ],
      *     "saldo": 50,
-     *     "message": "Saque no valor de R$ 500,00 efetuado com sucesso."
+     *     "message": "Saque no valor de R$ 150,00 efetuado com sucesso."
      * }
      * @response status=400 scenario="Usuário não encontrado" {
-     *     "message": "Usuário não encontrado."
+     *     "error": [
+     *         "code": 400,
+     *         "message": "Usuário não encontrado"
+     *     ]
      * }
-     * @response status=400 scenario="Conta Não encontrada" {
-     *     "message": "Conta não encontrada."
+     * @response status=400 scenario="Conta não encontrada" {
+     *     "error": [
+     *         "code": 400,
+     *         "message": "Conta não encontrada."
+     *     ]
      * }
-     * @response status=400 scenario="transaction_type_not_found" {
-     *     "message": "Erro. Tipo de transação não encontrada."
+     * @response status=500 scenario="Tipo de transação não encontrada" {
+     *     "error": [
+     *         "code": 500,
+     *         "message": "Tipo de transação não encontrada."
+     *     ]
      * }
-     * @response status=400 scenario="insuficient_funds" {
-     *     "message": "Você não tem saldo suficiente para este saque"
+     * @response status=400 scenario="Saldo insuficiente" {
+     *     "error": [
+     *         "code": 400,
+     *         "message": "Você não tem saldo suficiente para este saque."
+     *     ]
      * }
-     * @response status=400 scenario="wrong_amount" {
-     *     "message": "Valor solicitado não disponível para saque. Selecione um valor multiplo de 20, 50 e 100"
+     * @response status=400 scenario="Valor incorreto para saque" {
+     *     "error": [
+     *         "code": 400,
+     *         "message": "Valor solicitado não disponível para saque. Selecione um valor multiplo de 20, 50 e 100."
+     *     ]
      * }
      * @response status=503 scenario="Caixa ocupado" {
-     *     "message": "Caixa ocupado, por favor tente mais tarde"
+     *     "error": [
+     *         "code": 503,
+     *         "message": "Caixa ocupado, por favor tente mais tarde."
+     *     ]
      * }
      *
      * @param int $user_id
@@ -200,7 +271,7 @@ class AccountController extends Controller
     public function withdraw(int $user_id, int $account_id, Request $request)
     {
         $this->validate($request, [
-            'valor' => 'required|integer|min:0'
+            'valor' => 'required|integer|min:1'
         ]);
 
         (new UserService())->customFindOrFail($user_id);
@@ -261,10 +332,16 @@ class AccountController extends Controller
      *     "total": 20
      * }
      * @response status=400 scenario="Usuário não encontrado" {
-     *     "message": "Usuário não encontrado."
+     *     "error": [
+     *         "code": 400,
+     *         "message": "Usuário não encontrado"
+     *     ]
      * }
-     * @response status=400 scenario="Conta Não encontrada" {
-     *     "message": "Conta não encontrada."
+     * @response status=400 scenario="Conta não encontrada" {
+     *     "error": [
+     *         "code": 400,
+     *         "message": "Conta não encontrada."
+     *     ]
      * }
      *
      * @param int $user_id

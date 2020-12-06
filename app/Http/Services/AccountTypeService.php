@@ -12,7 +12,7 @@ class AccountTypeService
         try {
             return AccountType::findOrFail($id);
         } catch (\Exception $e) {
-            throw new HttpException(400, 'Tipo de conta não encontrado');
+            throw new HttpException(400, 'Tipo de conta não encontrado', null, [], 400);
         }
     }
 
@@ -21,7 +21,7 @@ class AccountTypeService
         try {
             return AccountType::where('name', $name)->first();
         } catch (\Exception $e) {
-            throw new HttpException(400, 'Tipo de conta não encontrado');
+            throw new HttpException(400, 'Tipo de conta não encontrado', null, [], 400);
         }
     }
 }

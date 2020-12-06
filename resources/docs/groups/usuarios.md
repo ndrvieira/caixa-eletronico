@@ -7,7 +7,7 @@ API para gerenciar usuários
 
 Lista todos os usuários cadastrados no sistema
 
-> Exemplo de requisição:
+> Example request:
 
 ```bash
 curl -X GET \
@@ -64,7 +64,7 @@ response.json()
 ```
 
 
-> Exemplo de resposta (200, Sucesso):
+> Example response (200, Sucesso):
 
 ```json
 
@@ -124,7 +124,7 @@ response.json()
 
 Cria um usuário no sistema
 
-> Exemplo de requisição:
+> Example request:
 
 ```bash
 curl -X POST \
@@ -199,7 +199,7 @@ response.json()
 ```
 
 
-> Exemplo de resposta (200, Sucesso):
+> Example response (200, Sucesso):
 
 ```json
 {
@@ -207,27 +207,41 @@ response.json()
     "message": "Usuário criado com sucesso."
 }
 ```
-> Exemplo de resposta (400, Dados inválidos):
+> Example response (422, Dados inválidos):
 
 ```json
+
 {
-    "cpf": [
-        "O cpf informado é inválido."
+    "error": [
+        "code": 422,
+        "message": [
+            "nome": [
+                "O campo nome é obrigatório."
+            ]
+        ]
     ]
 }
 ```
-> Exemplo de resposta (400, CPF já existente):
+> Example response (409, CPF existente):
 
 ```json
+
 {
-    "message": "O CPF informado já foi registrado em outro usuário."
+    "error": [
+        "code": 409,
+        "message": "O CPF informado já foi registrado em outro usuário."
+    ]
 }
 ```
-> Exemplo de resposta (400, Erro na aplicação):
+> Example response (500, Erro na aplicação):
 
 ```json
+
 {
-    "message": "Erro ao cadastrar usuário"
+    "error": [
+        "code": 500,
+        "message": "Erro ao cadastrar usuário"
+    ]
 }
 ```
 <div id="execution-results-POSTapi-v1-users" hidden>
@@ -271,18 +285,18 @@ Data no formato: d/m/Y.</p>
 
 Busca um usuário específico no sistema através do seu id
 
-> Exemplo de requisição:
+> Example request:
 
 ```bash
 curl -X GET \
-    -G "http://localhost/api/v1/users/ut?user_id=1" \
+    -G "http://localhost/api/v1/users/quia?user_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/api/v1/users/ut"
+    "http://localhost/api/v1/users/quia"
 );
 
 let params = {
@@ -307,7 +321,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->get(
-    'http://localhost/api/v1/users/ut',
+    'http://localhost/api/v1/users/quia',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -326,7 +340,7 @@ print_r(json_decode((string) $body));
 import requests
 import json
 
-url = 'http://localhost/api/v1/users/ut'
+url = 'http://localhost/api/v1/users/quia'
 params = {
   'user_id': '1',
 }
@@ -340,7 +354,7 @@ response.json()
 ```
 
 
-> Exemplo de resposta (200, Sucesso):
+> Example response (200, Sucesso):
 
 ```json
 {
@@ -352,11 +366,15 @@ response.json()
     "data_nascimento": "01\/01\/1992"
 }
 ```
-> Exemplo de resposta (400, Usuário não encontrado):
+> Example response (400, Usuário não encontrado):
 
 ```json
+
 {
-    "message": "Usuário não encontrado"
+    "error": [
+        "code": 400,
+        "message": "Usuário não encontrado"
+    ]
 }
 ```
 <div id="execution-results-GETapi-v1-users--user_id-" hidden>
@@ -395,18 +413,20 @@ Código do usuário.</p>
 
 Edita um usuário no sistema
 
-> Exemplo de requisição:
+> Example request:
 
 ```bash
-curl -X PUT \
-    "http://localhost/api/v1/users/sit?user_id=1" \
+curl -X PATCH \
+    "http://localhost/api/v1/users/labore?user_id=1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -d '{"nome":"Andr\u00e9","data_nascimento":"01\/01\/2001"}'
+
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/api/v1/users/sit"
+    "http://localhost/api/v1/users/labore"
 );
 
 let params = {
@@ -420,18 +440,23 @@ let headers = {
     "Accept": "application/json",
 };
 
+let body = {
+    "nome": "Andr\u00e9",
+    "data_nascimento": "01\/01\/2001"
+}
 
 fetch(url, {
-    method: "PUT",
+    method: "PATCH",
     headers,
+    body: JSON.stringify(body),
 }).then(response => response.json());
 ```
 
 ```php
 
 $client = new \GuzzleHttp\Client();
-$response = $client->put(
-    'http://localhost/api/v1/users/sit',
+$response = $client->patch(
+    'http://localhost/api/v1/users/labore',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -439,6 +464,10 @@ $response = $client->put(
         ],
         'query' => [
             'user_id'=> '1',
+        ],
+        'json' => [
+            'nome' => 'André',
+            'data_nascimento' => '01/01/2001',
         ],
     ]
 );
@@ -450,7 +479,11 @@ print_r(json_decode((string) $body));
 import requests
 import json
 
-url = 'http://localhost/api/v1/users/sit'
+url = 'http://localhost/api/v1/users/labore'
+payload = {
+    "nome": "Andr\u00e9",
+    "data_nascimento": "01\/01\/2001"
+}
 params = {
   'user_id': '1',
 }
@@ -459,12 +492,12 @@ headers = {
   'Accept': 'application/json'
 }
 
-response = requests.request('PUT', url, headers=headers, params=params)
+response = requests.request('PATCH', url, headers=headers, json=payload, params=params)
 response.json()
 ```
 
 
-> Exemplo de resposta (200, Sucesso):
+> Example response (200, Sucesso):
 
 ```json
 
@@ -472,65 +505,89 @@ response.json()
     "user": {
        "id": 1,
        "cpf": "306.045.290-31",
-       "created_at": "2020-12-02T01:39:47.000000Z",
-       "updated_at": "2020-12-02T01:39:47.000000Z",
        "nome": "André",
        "data_nascimento": "01/01/1992"
     },
     "message": "Usuário editado com sucesso",
 }
 ```
-> Exemplo de resposta (400, Usuário não encontrado):
+> Example response (422, Dados inválidos):
 
 ```json
-{
-    "message": "Usuário não encontrado"
-}
-```
-> Exemplo de resposta (400, Dados inválidos):
 
-```json
 {
-    "nome": [
-        "O nome informado é inválido."
+    "error": [
+        "code": 422,
+        "message": [
+            "data_nascimento": [
+                "A data informada para o campo data nascimento não respeita o formato d/m/Y."
+            ]
+        ]
     ]
 }
 ```
-> Exemplo de resposta (400, Erro na aplicação):
+> Example response (400, Usuário não encontrado):
 
 ```json
+
 {
-    "message": "Erro ao cadastrar usuário"
+    "error": [
+        "code": 400,
+        "message": "Usuário não encontrado"
+    ]
 }
 ```
-<div id="execution-results-PUTapi-v1-users--user_id-" hidden>
-    <blockquote>Received response<span id="execution-response-status-PUTapi-v1-users--user_id-"></span>:</blockquote>
-    <pre class="json"><code id="execution-response-content-PUTapi-v1-users--user_id-"></code></pre>
+> Example response (500, Erro na aplicação):
+
+```json
+
+{
+    "error": [
+        "code": 500,
+        "message": "Erro ao editar usuário"
+    ]
+}
+```
+<div id="execution-results-PATCHapi-v1-users--user_id-" hidden>
+    <blockquote>Received response<span id="execution-response-status-PATCHapi-v1-users--user_id-"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-PATCHapi-v1-users--user_id-"></code></pre>
 </div>
-<div id="execution-error-PUTapi-v1-users--user_id-" hidden>
+<div id="execution-error-PATCHapi-v1-users--user_id-" hidden>
     <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-PUTapi-v1-users--user_id-"></code></pre>
+    <pre><code id="execution-error-message-PATCHapi-v1-users--user_id-"></code></pre>
 </div>
-<form id="form-PUTapi-v1-users--user_id-" data-method="PUT" data-path="api/v1/users/{user_id}" data-authed="0" data-hasfiles="0" data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('PUTapi-v1-users--user_id-', this);">
+<form id="form-PATCHapi-v1-users--user_id-" data-method="PATCH" data-path="api/v1/users/{user_id}" data-authed="0" data-hasfiles="0" data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('PATCHapi-v1-users--user_id-', this);">
 <h3>
     Request&nbsp;&nbsp;&nbsp;
     </h3>
 <p>
-<small class="badge badge-darkblue">PUT</small>
+<small class="badge badge-purple">PATCH</small>
  <b><code>api/v1/users/{user_id}</code></b>
 </p>
 <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
 <p>
 <b><code>user_id</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
-<input type="text" name="user_id" data-endpoint="PUTapi-v1-users--user_id-" data-component="url" required  hidden>
+<input type="text" name="user_id" data-endpoint="PATCHapi-v1-users--user_id-" data-component="url" required  hidden>
 <br>
 </p>
 <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
 <p>
 <b><code>user_id</code></b>&nbsp;&nbsp;<small>integer</small>  &nbsp;
-<input type="number" name="user_id" data-endpoint="PUTapi-v1-users--user_id-" data-component="query" required  hidden>
+<input type="number" name="user_id" data-endpoint="PATCHapi-v1-users--user_id-" data-component="query" required  hidden>
 <br>
 Código do usuário.</p>
+<h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+<p>
+<b><code>nome</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+<input type="text" name="nome" data-endpoint="PATCHapi-v1-users--user_id-" data-component="body"  hidden>
+<br>
+Nome do usuário.</p>
+<p>
+<b><code>data_nascimento</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+<input type="text" name="data_nascimento" data-endpoint="PATCHapi-v1-users--user_id-" data-component="body"  hidden>
+<br>
+Data no formato: d/m/Y.</p>
+
 </form>
 
 
@@ -539,18 +596,18 @@ Código do usuário.</p>
 
 Deleta um usuário do sistema
 
-> Exemplo de requisição:
+> Example request:
 
 ```bash
 curl -X DELETE \
-    "http://localhost/api/v1/users/fugit?user_id=1" \
+    "http://localhost/api/v1/users/expedita?user_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"
 ```
 
 ```javascript
 const url = new URL(
-    "http://localhost/api/v1/users/fugit"
+    "http://localhost/api/v1/users/expedita"
 );
 
 let params = {
@@ -575,7 +632,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->delete(
-    'http://localhost/api/v1/users/fugit',
+    'http://localhost/api/v1/users/expedita',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -594,7 +651,7 @@ print_r(json_decode((string) $body));
 import requests
 import json
 
-url = 'http://localhost/api/v1/users/fugit'
+url = 'http://localhost/api/v1/users/expedita'
 params = {
   'user_id': '1',
 }
@@ -608,7 +665,7 @@ response.json()
 ```
 
 
-> Exemplo de resposta (200, Sucesso):
+> Example response (200, Sucesso):
 
 ```json
 
@@ -616,11 +673,15 @@ response.json()
     "message": "Usuário removido com sucesso",
 }
 ```
-> Exemplo de resposta (400, Usuário não encontrado):
+> Example response (400, Usuário não encontrado):
 
 ```json
+
 {
-    "message": "Usuário não encontrado"
+    "error": [
+        "code": 400,
+        "message": "Usuário não encontrado"
+    ]
 }
 ```
 <div id="execution-results-DELETEapi-v1-users--user_id-" hidden>

@@ -44,33 +44,33 @@
                             <li><a href='http://github.com/knuckleswtf/scribe'>Documentation powered by Scribe ✍</a></li>
                     </ul>
             <ul class="toc-footer" id="last-updated">
-            <li>Last updated: December 3 2020</li>
+            <li>Last updated: December 6 2020</li>
         </ul>
 </div>
 <div class="page-wrapper">
     <div class="dark-box"></div>
     <div class="content">
         <h1>Introdução</h1>
-<p>Documentação da API Caixa eletrônico.</p>
+<p>Documentação da API Caixa eletrônico. Esta API não usa autenticação.</p>
 <aside>Conforme você for rolando a página, irá ver exemplos de código de como utilizar esta API em algumas linguagens de programação (exibido no canto direito, escuro dessa página).
-Você poderá selecionar a linguagem no canto superior direito desta tela, para ter exemplos de requisições.</aside>
+Você poderá selecionar a linguagem no canto superior direito desta tela.</aside>
 <blockquote>
 <p>Base URL</p>
 </blockquote>
-<pre><code class="language-yaml">http://localhost</code></pre><h1>Autenticação</h1>
-<p>Essa API não utiliza autenticação.</p><h1>Contas bancárias</h1>
+<pre><code class="language-yaml">http://localhost</code></pre><h1>Requisições para autenticação</h1>
+<p>Essa API não usa autenticação.</p><h1>Contas bancárias</h1>
 <p>API para gerenciar contas de usuários</p>
 <h2>Listar</h2>
 <p>Lista as contas de um usuário.</p>
 <blockquote>
-<p>Exemplo de requisição:</p>
+<p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://localhost/api/v1/users/corporis/accounts?user_id=1" \
+    -G "http://localhost/api/v1/users/ipsa/accounts?user_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/users/corporis/accounts"
+    "http://localhost/api/v1/users/ipsa/accounts"
 );
 
 let params = {
@@ -91,7 +91,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://localhost/api/v1/users/corporis/accounts',
+    'http://localhost/api/v1/users/ipsa/accounts',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -107,7 +107,7 @@ print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost/api/v1/users/corporis/accounts'
+url = 'http://localhost/api/v1/users/ipsa/accounts'
 params = {
   'user_id': '1',
 }
@@ -119,7 +119,7 @@ headers = {
 response = requests.request('GET', url, headers=headers, params=params)
 response.json()</code></pre>
 <blockquote>
-<p>Exemplo de resposta (200, Sucesso):</p>
+<p>Example response (200, Sucesso):</p>
 </blockquote>
 <pre><code class="language-json">
 [
@@ -139,10 +139,14 @@ response.json()</code></pre>
     }
 ]</code></pre>
 <blockquote>
-<p>Exemplo de resposta (400, Usuário não encontrado):</p>
+<p>Example response (400, Usuário não encontrado):</p>
 </blockquote>
-<pre><code class="language-json">{
-    "message": "Usuário não encontrado."
+<pre><code class="language-json">
+{
+    "error": [
+        "code": 400,
+        "message": "Usuário não encontrado"
+    ]
 }</code></pre>
 <div id="execution-results-GETapi-v1-users--user_id--accounts" hidden>
     <blockquote>Received response<span id="execution-response-status-GETapi-v1-users--user_id--accounts"></span>:</blockquote>
@@ -176,16 +180,16 @@ Código do usuário</p>
 <h2>Criar</h2>
 <p>Cria uma conta para o usuário informado com um saldo inicial. Tipos aceitos: &quot;corrente&quot; e &quot;poupança&quot;.</p>
 <blockquote>
-<p>Exemplo de requisição:</p>
+<p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X POST \
-    "http://localhost/api/v1/users/at/accounts?user_id=1" \
+    "http://localhost/api/v1/users/atque/accounts?user_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"tipo":"poupan\u00e7a","saldo":500}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/users/at/accounts"
+    "http://localhost/api/v1/users/atque/accounts"
 );
 
 let params = {
@@ -212,7 +216,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;post(
-    'http://localhost/api/v1/users/at/accounts',
+    'http://localhost/api/v1/users/atque/accounts',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -232,7 +236,7 @@ print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost/api/v1/users/at/accounts'
+url = 'http://localhost/api/v1/users/atque/accounts'
 payload = {
     "tipo": "poupan\u00e7a",
     "saldo": 500
@@ -248,29 +252,55 @@ headers = {
 response = requests.request('POST', url, headers=headers, json=payload, params=params)
 response.json()</code></pre>
 <blockquote>
-<p>Exemplo de resposta (200, Sucesso):</p>
+<p>Example response (200, Sucesso):</p>
 </blockquote>
 <pre><code class="language-json">{
     "id": 5,
     "message": "Conta criada com sucesso."
 }</code></pre>
 <blockquote>
-<p>Exemplo de resposta (400, Usuário não encontrado):</p>
+<p>Example response (422, Dados inválidos):</p>
 </blockquote>
-<pre><code class="language-json">{
-    "message": "Usuário não encontrado."
+<pre><code class="language-json">
+{
+    "error": [
+        "code": 422,
+        "message": [
+            "tipo": [
+                "O campo tipo é obrigatório."
+            ]
+        ]
+    ]
 }</code></pre>
 <blockquote>
-<p>Exemplo de resposta (400, Tipo de conta inexistente):</p>
+<p>Example response (400, Usuário não encontrado):</p>
 </blockquote>
-<pre><code class="language-json">{
-    "message": "Tipo de conta não encontrado."
+<pre><code class="language-json">
+{
+    "error": [
+        "code": 400,
+        "message": "Usuário não encontrado"
+    ]
 }</code></pre>
 <blockquote>
-<p>Exemplo de resposta (400, Usuário já possui conta):</p>
+<p>Example response (400, Tipo de conta inexistente):</p>
 </blockquote>
-<pre><code class="language-json">{
-    "message": "O usuário já possui uma conta do tipo informado"
+<pre><code class="language-json">
+{
+    "error": [
+        "code": 400,
+        "message": "Tipo de conta não encontrado."
+    ]
+}</code></pre>
+<blockquote>
+<p>Example response (409, Usuário já possui conta deste tipo):</p>
+</blockquote>
+<pre><code class="language-json">
+{
+    "error": [
+        "code": 409,
+        "message": "O usuário já possui uma conta do tipo informado."
+    ]
 }</code></pre>
 <div id="execution-results-POSTapi-v1-users--user_id--accounts" hidden>
     <blockquote>Received response<span id="execution-response-status-POSTapi-v1-users--user_id--accounts"></span>:</blockquote>
@@ -307,143 +337,25 @@ Código do usuário</p>
 <br>
 Tipo da conta (corrente ou poupança).</p>
 <p>
-<b><code>saldo</code></b>&nbsp;&nbsp;<small>integer</small>  &nbsp;
-<input type="number" name="saldo" data-endpoint="POSTapi-v1-users--user_id--accounts" data-component="body" required  hidden>
+<b><code>saldo</code></b>&nbsp;&nbsp;<small>integer</small>     <i>optional</i> &nbsp;
+<input type="number" name="saldo" data-endpoint="POSTapi-v1-users--user_id--accounts" data-component="body"  hidden>
 <br>
-Saldo inicial da conta, somente valores positivos.</p>
+Saldo inicial da conta, somente valores positivos, se omitido será 0.</p>
 
-</form>
-<h2>Listar</h2>
-<p>Lista as contas de um usuário.</p>
-<blockquote>
-<p>Exemplo de requisição:</p>
-</blockquote>
-<pre><code class="language-bash">curl -X GET \
-    -G "http://localhost/api/v1/users/nemo/accounts/aut?user_id=1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"</code></pre>
-<pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/users/nemo/accounts/aut"
-);
-
-let params = {
-    "user_id": "1",
-};
-Object.keys(params)
-    .forEach(key =&gt; url.searchParams.append(key, params[key]));
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-<pre><code class="language-php">
-$client = new \GuzzleHttp\Client();
-$response = $client-&gt;get(
-    'http://localhost/api/v1/users/nemo/accounts/aut',
-    [
-        'headers' =&gt; [
-            'Content-Type' =&gt; 'application/json',
-            'Accept' =&gt; 'application/json',
-        ],
-        'query' =&gt; [
-            'user_id'=&gt; '1',
-        ],
-    ]
-);
-$body = $response-&gt;getBody();
-print_r(json_decode((string) $body));</code></pre>
-<pre><code class="language-python">import requests
-import json
-
-url = 'http://localhost/api/v1/users/nemo/accounts/aut'
-params = {
-  'user_id': '1',
-}
-headers = {
-  'Content-Type': 'application/json',
-  'Accept': 'application/json'
-}
-
-response = requests.request('GET', url, headers=headers, params=params)
-response.json()</code></pre>
-<blockquote>
-<p>Exemplo de resposta (200, Sucesso):</p>
-</blockquote>
-<pre><code class="language-json">
-[
-    {
-        "id": 1,
-        "user_id": 1,
-        "account_type_id": 1,
-        "saldo": 50,
-        "tipo": "corrente",
-    },
-    {
-        "id": 2,
-        "user_id": 1,
-        "account_type_id": 2,
-        "saldo": 50,
-        "tipo": "poupança",
-    }
-]</code></pre>
-<blockquote>
-<p>Exemplo de resposta (400, Usuário não encontrado):</p>
-</blockquote>
-<pre><code class="language-json">{
-    "message": "Usuário não encontrado."
-}</code></pre>
-<div id="execution-results-GETapi-v1-users--user_id--accounts--account_id-" hidden>
-    <blockquote>Received response<span id="execution-response-status-GETapi-v1-users--user_id--accounts--account_id-"></span>:</blockquote>
-    <pre class="json"><code id="execution-response-content-GETapi-v1-users--user_id--accounts--account_id-"></code></pre>
-</div>
-<div id="execution-error-GETapi-v1-users--user_id--accounts--account_id-" hidden>
-    <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-GETapi-v1-users--user_id--accounts--account_id-"></code></pre>
-</div>
-<form id="form-GETapi-v1-users--user_id--accounts--account_id-" data-method="GET" data-path="api/v1/users/{user_id}/accounts/{account_id}" data-authed="0" data-hasfiles="0" data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-users--user_id--accounts--account_id-', this);">
-<h3>
-    Request&nbsp;&nbsp;&nbsp;
-    </h3>
-<p>
-<small class="badge badge-green">GET</small>
- <b><code>api/v1/users/{user_id}/accounts/{account_id}</code></b>
-</p>
-<h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
-<p>
-<b><code>user_id</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
-<input type="text" name="user_id" data-endpoint="GETapi-v1-users--user_id--accounts--account_id-" data-component="url" required  hidden>
-<br>
-</p>
-<p>
-<b><code>account_id</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
-<input type="text" name="account_id" data-endpoint="GETapi-v1-users--user_id--accounts--account_id-" data-component="url" required  hidden>
-<br>
-</p>
-<h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
-<p>
-<b><code>user_id</code></b>&nbsp;&nbsp;<small>integer</small>  &nbsp;
-<input type="number" name="user_id" data-endpoint="GETapi-v1-users--user_id--accounts--account_id-" data-component="query" required  hidden>
-<br>
-Código do usuário</p>
 </form>
 <h2>Depositar</h2>
 <p>Realiza o depósito de um determinado valor na conta de um usuário.</p>
 <blockquote>
-<p>Exemplo de requisição:</p>
+<p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X POST \
-    "http://localhost/api/v1/users/voluptatem/accounts/accusamus/deposit?user_id=1&amp;account_id=1" \
+    "http://localhost/api/v1/users/provident/accounts/quia/deposit?user_id=1&amp;account_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"valor":500}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/users/voluptatem/accounts/accusamus/deposit"
+    "http://localhost/api/v1/users/provident/accounts/quia/deposit"
 );
 
 let params = {
@@ -470,7 +382,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;post(
-    'http://localhost/api/v1/users/voluptatem/accounts/accusamus/deposit',
+    'http://localhost/api/v1/users/provident/accounts/quia/deposit',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -490,7 +402,7 @@ print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost/api/v1/users/voluptatem/accounts/accusamus/deposit'
+url = 'http://localhost/api/v1/users/provident/accounts/quia/deposit'
 payload = {
     "valor": 500
 }
@@ -506,29 +418,65 @@ headers = {
 response = requests.request('POST', url, headers=headers, json=payload, params=params)
 response.json()</code></pre>
 <blockquote>
-<p>Exemplo de resposta (200, Sucesso):</p>
+<p>Example response (200, Sucesso):</p>
 </blockquote>
 <pre><code class="language-json">{
     "saldo": 50,
     "message": "Depósito no valor de R$ 500,00 efetuado com sucesso."
 }</code></pre>
 <blockquote>
-<p>Exemplo de resposta (400, Usuário não encontrado):</p>
+<p>Example response (422, Dados inválidos):</p>
 </blockquote>
-<pre><code class="language-json">{
-    "message": "Usuário não encontrado."
+<pre><code class="language-json">
+{
+    "error": [
+        "code": 422,
+        "message": [
+            "valor": [
+                "O campo valor é obrigatório."
+            ]
+        ]
+    ]
 }</code></pre>
 <blockquote>
-<p>Exemplo de resposta (400, Conta não encontrada):</p>
+<p>Example response (400, Usuário não encontrado):</p>
 </blockquote>
-<pre><code class="language-json">{
-    "message": "Conta não encontrada."
+<pre><code class="language-json">
+{
+    "error": [
+        "code": 400,
+        "message": "Usuário não encontrado"
+    ]
 }</code></pre>
 <blockquote>
-<p>Exemplo de resposta (503, Caixa ocupado):</p>
+<p>Example response (400, Conta não encontrada):</p>
 </blockquote>
-<pre><code class="language-json">{
-    "message": "Caixa ocupado, por favor tente mais tarde"
+<pre><code class="language-json">
+{
+    "error": [
+        "code": 400,
+        "message": "Conta não encontrada."
+    ]
+}</code></pre>
+<blockquote>
+<p>Example response (500, Tipo de transação não encontrada):</p>
+</blockquote>
+<pre><code class="language-json">
+{
+    "error": [
+        "code": 500,
+        "message": "Tipo de transação não encontrada."
+    ]
+}</code></pre>
+<blockquote>
+<p>Example response (503, Caixa ocupado):</p>
+</blockquote>
+<pre><code class="language-json">
+{
+    "error": [
+        "code": 503,
+        "message": "Caixa ocupado, por favor tente mais tarde."
+    ]
 }</code></pre>
 <div id="execution-results-POSTapi-v1-users--user_id--accounts--account_id--deposit" hidden>
     <blockquote>Received response<span id="execution-response-status-POSTapi-v1-users--user_id--accounts--account_id--deposit"></span>:</blockquote>
@@ -580,16 +528,16 @@ Valor do depósito.</p>
 <p>Realiza o saque de um determinado valor na conta de um usuário, e retorna o saldo e
 a quantidade de cada nota que deve retornar</p>
 <blockquote>
-<p>Exemplo de requisição:</p>
+<p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X POST \
-    "http://localhost/api/v1/users/tempore/accounts/maxime/withdraw?user_id=1&amp;account_id=1" \
+    "http://localhost/api/v1/users/molestiae/accounts/quod/withdraw?user_id=1&amp;account_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"valor":500}'
+    -d '{"valor":150}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/users/tempore/accounts/maxime/withdraw"
+    "http://localhost/api/v1/users/molestiae/accounts/quod/withdraw"
 );
 
 let params = {
@@ -605,7 +553,7 @@ let headers = {
 };
 
 let body = {
-    "valor": 500
+    "valor": 150
 }
 
 fetch(url, {
@@ -616,7 +564,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;post(
-    'http://localhost/api/v1/users/tempore/accounts/maxime/withdraw',
+    'http://localhost/api/v1/users/molestiae/accounts/quod/withdraw',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -627,7 +575,7 @@ $response = $client-&gt;post(
             'account_id'=&gt; '1',
         ],
         'json' =&gt; [
-            'valor' =&gt; 500,
+            'valor' =&gt; 150,
         ],
     ]
 );
@@ -636,9 +584,9 @@ print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost/api/v1/users/tempore/accounts/maxime/withdraw'
+url = 'http://localhost/api/v1/users/molestiae/accounts/quod/withdraw'
 payload = {
-    "valor": 500
+    "valor": 150
 }
 params = {
   'user_id': '1',
@@ -652,7 +600,7 @@ headers = {
 response = requests.request('POST', url, headers=headers, json=payload, params=params)
 response.json()</code></pre>
 <blockquote>
-<p>Exemplo de resposta (200, Sucesso):</p>
+<p>Example response (200, Sucesso):</p>
 </blockquote>
 <pre><code class="language-json">
 {
@@ -662,43 +610,67 @@ response.json()</code></pre>
        "20": 0
     ],
     "saldo": 50,
-    "message": "Saque no valor de R$ 500,00 efetuado com sucesso."
+    "message": "Saque no valor de R$ 150,00 efetuado com sucesso."
 }</code></pre>
 <blockquote>
-<p>Exemplo de resposta (400, Usuário não encontrado):</p>
+<p>Example response (400, Usuário não encontrado):</p>
 </blockquote>
-<pre><code class="language-json">{
-    "message": "Usuário não encontrado."
+<pre><code class="language-json">
+{
+    "error": [
+        "code": 400,
+        "message": "Usuário não encontrado"
+    ]
 }</code></pre>
 <blockquote>
-<p>Exemplo de resposta (400, Conta Não encontrada):</p>
+<p>Example response (400, Conta não encontrada):</p>
 </blockquote>
-<pre><code class="language-json">{
-    "message": "Conta não encontrada."
+<pre><code class="language-json">
+{
+    "error": [
+        "code": 400,
+        "message": "Conta não encontrada."
+    ]
 }</code></pre>
 <blockquote>
-<p>Exemplo de resposta (400, transaction_type_not_found):</p>
+<p>Example response (500, Tipo de transação não encontrada):</p>
 </blockquote>
-<pre><code class="language-json">{
-    "message": "Erro. Tipo de transação não encontrada."
+<pre><code class="language-json">
+{
+    "error": [
+        "code": 500,
+        "message": "Tipo de transação não encontrada."
+    ]
 }</code></pre>
 <blockquote>
-<p>Exemplo de resposta (400, insuficient_funds):</p>
+<p>Example response (400, Saldo insuficiente):</p>
 </blockquote>
-<pre><code class="language-json">{
-    "message": "Você não tem saldo suficiente para este saque"
+<pre><code class="language-json">
+{
+    "error": [
+        "code": 400,
+        "message": "Você não tem saldo suficiente para este saque."
+    ]
 }</code></pre>
 <blockquote>
-<p>Exemplo de resposta (400, wrong_amount):</p>
+<p>Example response (400, Valor incorreto para saque):</p>
 </blockquote>
-<pre><code class="language-json">{
-    "message": "Valor solicitado não disponível para saque. Selecione um valor multiplo de 20, 50 e 100"
+<pre><code class="language-json">
+{
+    "error": [
+        "code": 400,
+        "message": "Valor solicitado não disponível para saque. Selecione um valor multiplo de 20, 50 e 100."
+    ]
 }</code></pre>
 <blockquote>
-<p>Exemplo de resposta (503, Caixa ocupado):</p>
+<p>Example response (503, Caixa ocupado):</p>
 </blockquote>
-<pre><code class="language-json">{
-    "message": "Caixa ocupado, por favor tente mais tarde"
+<pre><code class="language-json">
+{
+    "error": [
+        "code": 503,
+        "message": "Caixa ocupado, por favor tente mais tarde."
+    ]
 }</code></pre>
 <div id="execution-results-POSTapi-v1-users--user_id--accounts--account_id--withdraw" hidden>
     <blockquote>Received response<span id="execution-response-status-POSTapi-v1-users--user_id--accounts--account_id--withdraw"></span>:</blockquote>
@@ -749,14 +721,14 @@ Valor do saque.</p>
 <h2>Consultar extrato</h2>
 <p>Consulta o extrato da conta de um usuário.</p>
 <blockquote>
-<p>Exemplo de requisição:</p>
+<p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://localhost/api/v1/users/magnam/accounts/aliquid/statement?user_id=1&amp;account_id=1" \
+    -G "http://localhost/api/v1/users/et/accounts/repellendus/statement?user_id=1&amp;account_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/users/magnam/accounts/aliquid/statement"
+    "http://localhost/api/v1/users/et/accounts/repellendus/statement"
 );
 
 let params = {
@@ -778,7 +750,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://localhost/api/v1/users/magnam/accounts/aliquid/statement',
+    'http://localhost/api/v1/users/et/accounts/repellendus/statement',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -795,7 +767,7 @@ print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost/api/v1/users/magnam/accounts/aliquid/statement'
+url = 'http://localhost/api/v1/users/et/accounts/repellendus/statement'
 params = {
   'user_id': '1',
   'account_id': '1',
@@ -808,7 +780,7 @@ headers = {
 response = requests.request('GET', url, headers=headers, params=params)
 response.json()</code></pre>
 <blockquote>
-<p>Exemplo de resposta (200, Sucesso):</p>
+<p>Example response (200, Sucesso):</p>
 </blockquote>
 <pre><code class="language-json">
 {
@@ -845,16 +817,24 @@ response.json()</code></pre>
     "total": 20
 }</code></pre>
 <blockquote>
-<p>Exemplo de resposta (400, Usuário não encontrado):</p>
+<p>Example response (400, Usuário não encontrado):</p>
 </blockquote>
-<pre><code class="language-json">{
-    "message": "Usuário não encontrado."
+<pre><code class="language-json">
+{
+    "error": [
+        "code": 400,
+        "message": "Usuário não encontrado"
+    ]
 }</code></pre>
 <blockquote>
-<p>Exemplo de resposta (400, Conta Não encontrada):</p>
+<p>Example response (400, Conta não encontrada):</p>
 </blockquote>
-<pre><code class="language-json">{
-    "message": "Conta não encontrada."
+<pre><code class="language-json">
+{
+    "error": [
+        "code": 400,
+        "message": "Conta não encontrada."
+    ]
 }</code></pre>
 <div id="execution-results-GETapi-v1-users--user_id--accounts--account_id--statement" hidden>
     <blockquote>Received response<span id="execution-response-status-GETapi-v1-users--user_id--accounts--account_id--statement"></span>:</blockquote>
@@ -899,7 +879,7 @@ Código da conta do usuário</p>
 <h2>Listar</h2>
 <p>Lista todos os usuários cadastrados no sistema</p>
 <blockquote>
-<p>Exemplo de requisição:</p>
+<p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
     -G "http://localhost/api/v1/users" \
@@ -943,7 +923,7 @@ headers = {
 response = requests.request('GET', url, headers=headers)
 response.json()</code></pre>
 <blockquote>
-<p>Exemplo de resposta (200, Sucesso):</p>
+<p>Example response (200, Sucesso):</p>
 </blockquote>
 <pre><code class="language-json">
 {
@@ -997,7 +977,7 @@ response.json()</code></pre>
 <h2>Criar</h2>
 <p>Cria um usuário no sistema</p>
 <blockquote>
-<p>Exemplo de requisição:</p>
+<p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X POST \
     "http://localhost/api/v1/users" \
@@ -1060,31 +1040,45 @@ headers = {
 response = requests.request('POST', url, headers=headers, json=payload)
 response.json()</code></pre>
 <blockquote>
-<p>Exemplo de resposta (200, Sucesso):</p>
+<p>Example response (200, Sucesso):</p>
 </blockquote>
 <pre><code class="language-json">{
     "id": 4,
     "message": "Usuário criado com sucesso."
 }</code></pre>
 <blockquote>
-<p>Exemplo de resposta (400, Dados inválidos):</p>
+<p>Example response (422, Dados inválidos):</p>
 </blockquote>
-<pre><code class="language-json">{
-    "cpf": [
-        "O cpf informado é inválido."
+<pre><code class="language-json">
+{
+    "error": [
+        "code": 422,
+        "message": [
+            "nome": [
+                "O campo nome é obrigatório."
+            ]
+        ]
     ]
 }</code></pre>
 <blockquote>
-<p>Exemplo de resposta (400, CPF já existente):</p>
+<p>Example response (409, CPF existente):</p>
 </blockquote>
-<pre><code class="language-json">{
-    "message": "O CPF informado já foi registrado em outro usuário."
+<pre><code class="language-json">
+{
+    "error": [
+        "code": 409,
+        "message": "O CPF informado já foi registrado em outro usuário."
+    ]
 }</code></pre>
 <blockquote>
-<p>Exemplo de resposta (400, Erro na aplicação):</p>
+<p>Example response (500, Erro na aplicação):</p>
 </blockquote>
-<pre><code class="language-json">{
-    "message": "Erro ao cadastrar usuário"
+<pre><code class="language-json">
+{
+    "error": [
+        "code": 500,
+        "message": "Erro ao cadastrar usuário"
+    ]
 }</code></pre>
 <div id="execution-results-POSTapi-v1-users" hidden>
     <blockquote>Received response<span id="execution-response-status-POSTapi-v1-users"></span>:</blockquote>
@@ -1123,14 +1117,14 @@ Data no formato: d/m/Y.</p>
 <h2>Buscar</h2>
 <p>Busca um usuário específico no sistema através do seu id</p>
 <blockquote>
-<p>Exemplo de requisição:</p>
+<p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://localhost/api/v1/users/ut?user_id=1" \
+    -G "http://localhost/api/v1/users/quia?user_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/users/ut"
+    "http://localhost/api/v1/users/quia"
 );
 
 let params = {
@@ -1151,7 +1145,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://localhost/api/v1/users/ut',
+    'http://localhost/api/v1/users/quia',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -1167,7 +1161,7 @@ print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost/api/v1/users/ut'
+url = 'http://localhost/api/v1/users/quia'
 params = {
   'user_id': '1',
 }
@@ -1179,7 +1173,7 @@ headers = {
 response = requests.request('GET', url, headers=headers, params=params)
 response.json()</code></pre>
 <blockquote>
-<p>Exemplo de resposta (200, Sucesso):</p>
+<p>Example response (200, Sucesso):</p>
 </blockquote>
 <pre><code class="language-json">{
     "id": 1,
@@ -1190,10 +1184,14 @@ response.json()</code></pre>
     "data_nascimento": "01\/01\/1992"
 }</code></pre>
 <blockquote>
-<p>Exemplo de resposta (400, Usuário não encontrado):</p>
+<p>Example response (400, Usuário não encontrado):</p>
 </blockquote>
-<pre><code class="language-json">{
-    "message": "Usuário não encontrado"
+<pre><code class="language-json">
+{
+    "error": [
+        "code": 400,
+        "message": "Usuário não encontrado"
+    ]
 }</code></pre>
 <div id="execution-results-GETapi-v1-users--user_id-" hidden>
     <blockquote>Received response<span id="execution-response-status-GETapi-v1-users--user_id-"></span>:</blockquote>
@@ -1227,14 +1225,16 @@ Código do usuário.</p>
 <h2>Editar</h2>
 <p>Edita um usuário no sistema</p>
 <blockquote>
-<p>Exemplo de requisição:</p>
+<p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X PUT \
-    "http://localhost/api/v1/users/sit?user_id=1" \
+<pre><code class="language-bash">curl -X PATCH \
+    "http://localhost/api/v1/users/labore?user_id=1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"</code></pre>
+    -H "Accept: application/json" \
+    -d '{"nome":"Andr\u00e9","data_nascimento":"01\/01\/2001"}'
+</code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/users/sit"
+    "http://localhost/api/v1/users/labore"
 );
 
 let params = {
@@ -1248,14 +1248,20 @@ let headers = {
     "Accept": "application/json",
 };
 
+let body = {
+    "nome": "Andr\u00e9",
+    "data_nascimento": "01\/01\/2001"
+}
+
 fetch(url, {
-    method: "PUT",
+    method: "PATCH",
     headers,
+    body: JSON.stringify(body),
 }).then(response =&gt; response.json());</code></pre>
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
-$response = $client-&gt;put(
-    'http://localhost/api/v1/users/sit',
+$response = $client-&gt;patch(
+    'http://localhost/api/v1/users/labore',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -1264,6 +1270,10 @@ $response = $client-&gt;put(
         'query' =&gt; [
             'user_id'=&gt; '1',
         ],
+        'json' =&gt; [
+            'nome' =&gt; 'André',
+            'data_nascimento' =&gt; '01/01/2001',
+        ],
     ]
 );
 $body = $response-&gt;getBody();
@@ -1271,7 +1281,11 @@ print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost/api/v1/users/sit'
+url = 'http://localhost/api/v1/users/labore'
+payload = {
+    "nome": "Andr\u00e9",
+    "data_nascimento": "01\/01\/2001"
+}
 params = {
   'user_id': '1',
 }
@@ -1280,83 +1294,107 @@ headers = {
   'Accept': 'application/json'
 }
 
-response = requests.request('PUT', url, headers=headers, params=params)
+response = requests.request('PATCH', url, headers=headers, json=payload, params=params)
 response.json()</code></pre>
 <blockquote>
-<p>Exemplo de resposta (200, Sucesso):</p>
+<p>Example response (200, Sucesso):</p>
 </blockquote>
 <pre><code class="language-json">
 {
     "user": {
        "id": 1,
        "cpf": "306.045.290-31",
-       "created_at": "2020-12-02T01:39:47.000000Z",
-       "updated_at": "2020-12-02T01:39:47.000000Z",
        "nome": "André",
        "data_nascimento": "01/01/1992"
     },
     "message": "Usuário editado com sucesso",
 }</code></pre>
 <blockquote>
-<p>Exemplo de resposta (400, Usuário não encontrado):</p>
+<p>Example response (422, Dados inválidos):</p>
 </blockquote>
-<pre><code class="language-json">{
-    "message": "Usuário não encontrado"
-}</code></pre>
-<blockquote>
-<p>Exemplo de resposta (400, Dados inválidos):</p>
-</blockquote>
-<pre><code class="language-json">{
-    "nome": [
-        "O nome informado é inválido."
+<pre><code class="language-json">
+{
+    "error": [
+        "code": 422,
+        "message": [
+            "data_nascimento": [
+                "A data informada para o campo data nascimento não respeita o formato d/m/Y."
+            ]
+        ]
     ]
 }</code></pre>
 <blockquote>
-<p>Exemplo de resposta (400, Erro na aplicação):</p>
+<p>Example response (400, Usuário não encontrado):</p>
 </blockquote>
-<pre><code class="language-json">{
-    "message": "Erro ao cadastrar usuário"
+<pre><code class="language-json">
+{
+    "error": [
+        "code": 400,
+        "message": "Usuário não encontrado"
+    ]
 }</code></pre>
-<div id="execution-results-PUTapi-v1-users--user_id-" hidden>
-    <blockquote>Received response<span id="execution-response-status-PUTapi-v1-users--user_id-"></span>:</blockquote>
-    <pre class="json"><code id="execution-response-content-PUTapi-v1-users--user_id-"></code></pre>
+<blockquote>
+<p>Example response (500, Erro na aplicação):</p>
+</blockquote>
+<pre><code class="language-json">
+{
+    "error": [
+        "code": 500,
+        "message": "Erro ao editar usuário"
+    ]
+}</code></pre>
+<div id="execution-results-PATCHapi-v1-users--user_id-" hidden>
+    <blockquote>Received response<span id="execution-response-status-PATCHapi-v1-users--user_id-"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-PATCHapi-v1-users--user_id-"></code></pre>
 </div>
-<div id="execution-error-PUTapi-v1-users--user_id-" hidden>
+<div id="execution-error-PATCHapi-v1-users--user_id-" hidden>
     <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-PUTapi-v1-users--user_id-"></code></pre>
+    <pre><code id="execution-error-message-PATCHapi-v1-users--user_id-"></code></pre>
 </div>
-<form id="form-PUTapi-v1-users--user_id-" data-method="PUT" data-path="api/v1/users/{user_id}" data-authed="0" data-hasfiles="0" data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('PUTapi-v1-users--user_id-', this);">
+<form id="form-PATCHapi-v1-users--user_id-" data-method="PATCH" data-path="api/v1/users/{user_id}" data-authed="0" data-hasfiles="0" data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('PATCHapi-v1-users--user_id-', this);">
 <h3>
     Request&nbsp;&nbsp;&nbsp;
     </h3>
 <p>
-<small class="badge badge-darkblue">PUT</small>
+<small class="badge badge-purple">PATCH</small>
  <b><code>api/v1/users/{user_id}</code></b>
 </p>
 <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
 <p>
 <b><code>user_id</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
-<input type="text" name="user_id" data-endpoint="PUTapi-v1-users--user_id-" data-component="url" required  hidden>
+<input type="text" name="user_id" data-endpoint="PATCHapi-v1-users--user_id-" data-component="url" required  hidden>
 <br>
 </p>
 <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
 <p>
 <b><code>user_id</code></b>&nbsp;&nbsp;<small>integer</small>  &nbsp;
-<input type="number" name="user_id" data-endpoint="PUTapi-v1-users--user_id-" data-component="query" required  hidden>
+<input type="number" name="user_id" data-endpoint="PATCHapi-v1-users--user_id-" data-component="query" required  hidden>
 <br>
 Código do usuário.</p>
+<h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+<p>
+<b><code>nome</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+<input type="text" name="nome" data-endpoint="PATCHapi-v1-users--user_id-" data-component="body"  hidden>
+<br>
+Nome do usuário.</p>
+<p>
+<b><code>data_nascimento</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+<input type="text" name="data_nascimento" data-endpoint="PATCHapi-v1-users--user_id-" data-component="body"  hidden>
+<br>
+Data no formato: d/m/Y.</p>
+
 </form>
 <h2>Deletar</h2>
 <p>Deleta um usuário do sistema</p>
 <blockquote>
-<p>Exemplo de requisição:</p>
+<p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X DELETE \
-    "http://localhost/api/v1/users/fugit?user_id=1" \
+    "http://localhost/api/v1/users/expedita?user_id=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/users/fugit"
+    "http://localhost/api/v1/users/expedita"
 );
 
 let params = {
@@ -1377,7 +1415,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;delete(
-    'http://localhost/api/v1/users/fugit',
+    'http://localhost/api/v1/users/expedita',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -1393,7 +1431,7 @@ print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-python">import requests
 import json
 
-url = 'http://localhost/api/v1/users/fugit'
+url = 'http://localhost/api/v1/users/expedita'
 params = {
   'user_id': '1',
 }
@@ -1405,17 +1443,21 @@ headers = {
 response = requests.request('DELETE', url, headers=headers, params=params)
 response.json()</code></pre>
 <blockquote>
-<p>Exemplo de resposta (200, Sucesso):</p>
+<p>Example response (200, Sucesso):</p>
 </blockquote>
 <pre><code class="language-json">
 {
     "message": "Usuário removido com sucesso",
 }</code></pre>
 <blockquote>
-<p>Exemplo de resposta (400, Usuário não encontrado):</p>
+<p>Example response (400, Usuário não encontrado):</p>
 </blockquote>
-<pre><code class="language-json">{
-    "message": "Usuário não encontrado"
+<pre><code class="language-json">
+{
+    "error": [
+        "code": 400,
+        "message": "Usuário não encontrado"
+    ]
 }</code></pre>
 <div id="execution-results-DELETEapi-v1-users--user_id-" hidden>
     <blockquote>Received response<span id="execution-response-status-DELETEapi-v1-users--user_id-"></span>:</blockquote>

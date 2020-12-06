@@ -4,9 +4,7 @@ namespace App\Http\Services;
 
 use App\Models\Account;
 use App\Models\TransactionType;
-use DateTime;
-use DateTimeZone;
-use stdClass;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ATM
 {
@@ -42,7 +40,7 @@ class ATM
         try {
             return $this->mutateAccount();
         } catch (\Exception $e) {
-            if ($e->getMessage() == 'Caixa ocupado, por favor tente mais tarde' && $retries <= self::$max_tries) {
+            if ($e->getCode() === 503 && $retries <= self::$max_tries) {
                 $retries++;
                 usleep(self::$delay * 1000);
                 return $this->initiateOperation($retries);
@@ -59,9 +57,10 @@ class ATM
      */
     private function mutateAccount()
     {
-        $this->verfifiesAccountBusyErrors();
+        $this->verifiesAccountBusyErrors();
         if ($this->setAccountBusy(true) === 0) {
-            abort(503, 'Caixa ocupado, por favor tente mais tarde');
+            throw new HttpException(503, 'Caixa ocupado, por favor tente mais tarde', null, [], 503);
+            // abort(503, 'Caixa ocupado, por favor tente mais tarde');
         }
 
         try {
@@ -76,7 +75,7 @@ class ATM
             } else if ($this->transaction_type->name === 'withdraw') {
                 $this->account->amount -= $this->value;
             } else {
-                abort(400, 'Erro. Tipo de transação não encontrada.');
+                throw new HttpException(400, 'Erro. Tipo de transação não encontrada.', null, [], 400);
             }
             $this->account->save();
         } catch (\Exception $e) {
@@ -88,7 +87,7 @@ class ATM
         (new TransactionService)->createTransaction($this->account, $this->transaction_type, $this->value);
 
         $this->setAccountBusy(false);
-        $return = new stdClass();
+        $return = new \stdClass();
         $return->returning_bills = $this->returning_bills;
         $return->account = $this->account;
         return $return;
@@ -111,27 +110,32 @@ class ATM
     {
         if ($this->transaction_type->name === 'withdraw') {
             if ($this->account->amount < $this->value) {
-                abort(400, 'Você não tem saldo suficiente para este saque');
+                throw new HttpException(400, 'Você não tem saldo suficiente para este saque', null, [], 400);
             } else if (empty($this->calculateMoneyBills($this->value))) {
-                abort(400, 'Valor solicitado não disponível para saque. Selecione um valor multiplo de 20, 50 e 100');
+                throw new HttpException(400, 'Valor solicitado não disponível para saque. Selecione um valor multiplo de 20, 50 e 100', null, [], 400);
+            } else if ($this->sumCalculatedMoneyBills() !== $this->value) {
+                throw new HttpException(500, 'Erro ao obter notas', null, [], 500);
             }
         }
     }
 
+    
+
     /**
-     * Todas as exceptions tem tratamento para destravar a conta, mas só para garantir, quando uma conta ficar ocupada por mais de 15 segundos
-     * o sistema desbloqueia essa conta para evitar que ela fique presa.
+     * Todas as exceptions tem tratamento para destravar a conta, mas só para garantir, quando uma conta
+     * ficar ocupada por mais de 15 segundos, o sistema desbloqueia essa conta para evitar que ela fique presa.
      */
-    private function verfifiesAccountBusyErrors()
+    private function verifiesAccountBusyErrors()
     {
-        $now = time();
         try {
-            $timezone = new DateTimeZone(getenv('APP_TIMEZONE')) ?? null;
+            $timezone = new \DateTimeZone(getenv('APP_TIMEZONE')) ?? null;
+            $now = new \DateTime('now', $timezone);
         } catch (\Exception $e) {
-            abort(500, 'Timezone configurada incorretamente');
+            throw new HttpException(500, 'Timezone configurada incorretamente', null, [], 500);
         }
-        $last_update = DateTime::createFromFormat('Y-m-d H:i:s', $this->account->updated_at, $timezone)->getTimestamp();
-        if ($now - $last_update > 15) {
+        $now_timestamp = $now->getTimestamp();
+        $last_update_timestamp = $this->account->updated_at->getTimestamp();
+        if ($now_timestamp - $last_update_timestamp > 15) {
             $this->setAccountBusy(false);
         }
     }
@@ -151,51 +155,94 @@ class ATM
     }
 
     /**
-     * @param array $available_bills Conjunto de notas disponíveis
+     * Retorna o conjunto de notas para o cliente com a quantidade de cada nota que deve ser entregue para ele.
+     * Quando não conseguir zerar o valor do saque retorna vazio.
+     * 
+     * @param array $available_bills Array com as notas disponíveis
      * @param int $value Valor do saque
-     * @return array
      */
     private function getBillSet(array $available_bills, int $value)
     {
         $bill_set = [];
+        $remaining = 0;
         $mutable_value = $value;
-        foreach ($available_bills as $bill) {
-            $number_of_bills = $this->getNumberOfBills($bill, $mutable_value);
-            $bill_set[$bill] = $number_of_bills;
-            $mutable_value -= $bill * $number_of_bills;
+        $lastElement = end($available_bills);
+        foreach ($available_bills as $key => $bill) {
+
+            /** @param int $number_of_bills Obtem o valor máximo que se pode tirar do valor solicitado para saque */
+            $number_of_bills = (int) floor($mutable_value / $bill);
+            if ($number_of_bills > 0) {
+
+                /** @param int $remaining O resto do valor após divisão */
+                $remaining = $mutable_value % $bill;
+
+                /** Se for a última nota, apenas verifica se conseguiu zerar */
+                if ($bill === $lastElement) {
+                    if ($remaining === 0) {
+                        $bill_set[$bill] = $number_of_bills;
+                        $mutable_value -= $number_of_bills * $bill;
+                    } else {
+                        $bill_set[$bill] = 0;
+                    }
+                    continue;
+                }
+
+                /** @param array $mutable_available_bills Array para manipulação dentro do foreach, sem alterar os valores originais */
+                $mutable_available_bills = $available_bills;
+                /** Agora vamos criar um novo conjunto de notas disponíveis partindo da nota atual */
+                $new_available_bills = array_splice($mutable_available_bills, $key);
+                /** E simular se vai ser possível zerar o valor solicitado para saque */
+                $result = $this->getBillSet($new_available_bills, $remaining);
+
+                if (!empty($result)) {
+                    /** Se for possível zerar, salva esse valor na $bill_set, subtrai o valor do saque e continua */
+                    $bill_set[$bill] = $number_of_bills;
+                    $mutable_value -= $number_of_bills * $bill;
+                    continue;
+                } else if ($number_of_bills > 1) {
+                    /** Se não for possível zerar, vai ir tentando diminuir a quantidade de notas pra tentar fechar esse valor */
+                    $fallback_result = false;
+                    for ($i = $number_of_bills - 1; $i > 0; $i--) {
+                        /** Agora com uma nota a menos, diminuimos o valor do remaining */
+                        $remaining_fallback = $mutable_value - ($i * $bill);
+                        /** E simulamos novamente */
+                        $result = $this->getBillSet($new_available_bills, $remaining_fallback);
+                        if (!empty($result)) {
+                            $bill_set[$bill] = $i;
+                            $mutable_value -= $i * $bill;
+                            $fallback_result = true;
+                            break;
+                        }
+                    }
+                    if ($fallback_result) {
+                        continue;
+                    }
+                }
+            }
+            $bill_set[$bill] = 0;
         }
 
-        /** Se foi possivel zerar o valor com esse set, volta */
-        if ($mutable_value === 0) {
-            /** Se foi possivel zerar o valor com esse set, retorna esse set */
+        if ($mutable_value === 0 && $remaining === 0) {
             return $bill_set;
-        } else if ($mutable_value !== 0 && count($available_bills) >= 2) {
-            /** Se não, mas ainda existe a possibilidade, tenta com essa nova possibilidade, q vai remover o ultimo elemento do array */
-            array_shift($available_bills);
-            return $this->getBillSet($available_bills, $value);
-        } else {
-            dd([$mutable_value, $bill, $number_of_bills, $bill * $number_of_bills]);
-            return [];
         }
+
+        return [];
     }
 
     /**
-     * Retorna a quantidade de notas que aquele valor pode retornar
-     * 
-     * @param int $bill Valor que deseja subtrair
-     * @param int $value Valor de quem deseja subtrair
-     * @param int $number Número de subtrações
-     * @return int
+     * Retorna a soma das notas armazenadas em $this->returning_bills
      */
-    private function getNumberOfBills(int $bill, int $value, int $number = 0)
+    private function sumCalculatedMoneyBills()
     {
-        if ($value >= $bill) {
-            $value -= $bill;
-            $number++;
-            if ($value >= $bill) {
-                return $this->getNumberOfBills($bill, $value, $number);
-            }
+        $valor_final = 0;
+        if (empty($this->returning_bills)) {
+            return 0;
         }
-        return $number;
+
+        foreach ($this->returning_bills as $bill => $quantity) {
+            $valor_final += $bill * $quantity;
+        }
+
+        return $valor_final;
     }
 }
