@@ -2,6 +2,10 @@
 
 Simulador de caixa eletrônico.
 
+## Requisitos
+
+*Git e Docker*
+
 ## Como instalar o projeto
 
 #### Clone o projeto e depois entre em sua pasta:
