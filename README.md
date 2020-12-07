@@ -52,6 +52,9 @@ Rode os testes:
 <br/>
 `./vendor/bin/phpunit`
 
+### Collection do postman
+Foi disponibilizada uma collection do postman, ela está na raiz do projeto com nome de: *Caixa Eletronico.postman_collection.json*
+
 ## License
 
 [MIT license](https://opensource.org/licenses/MIT).
