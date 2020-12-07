@@ -35,6 +35,19 @@ Rode a migration:
 <br/>
 *OBS2: Em caso de erro de conexão com o mysql, é possível que ele ainda esteja iniciando.*
 
+### Testes
+Na raiz do projeto execute (Caso ainda esteja dentro do container do docker, pular este passo):
+<br/>
+`docker-compose exec php /bin/sh`
+<br/>
+Navegue até a pasta principal (Caso ainda esteja dentro do container do docker, pular este passo):
+<br/>
+`cd ../`
+<br/>
+Rode os testes:
+<br/>
+`./vendor/bin/phpunit`
+
 ## License
 
 [MIT license](https://opensource.org/licenses/MIT).
