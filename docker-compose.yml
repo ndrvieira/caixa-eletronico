@@ -10,6 +10,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: lumen
+      #se for editar o usuario, edite também o arquivo docker/mysql/init/databases.sql
       MYSQL_USER: andre
       MYSQL_PASSWORD: password
     networks:
@@ -18,6 +19,7 @@ services:
       web:
       default:
     volumes:
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d
       - dbdata:/var/lib/mysql
 
   nginx:

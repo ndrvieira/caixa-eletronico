@@ -30,7 +30,6 @@ class AccountTest extends TestCase
     }
     
     /**
-     * @setUp
      * @test
      */
     public function listar_contas()
@@ -60,7 +59,7 @@ class AccountTest extends TestCase
      */
     public function listar_contas_em_um_usuario_inexistente()
     {
-        $last_user = DB::table('users')->latest()->first();
+        $last_user = DB::table('users')->orderBy('id', 'desc')->first();
         $last_plus_one = $last_user->id + 1;
         $this->get($this->api_prefix . '/' . $last_plus_one . '/accounts')
             ->seeStatusCode(404)

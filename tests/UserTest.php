@@ -14,7 +14,7 @@ class UserTest extends TestCase
     protected $api_prefix_with_user_code = '';
     protected $user;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
         $this->user = factory(User::class)->create();
@@ -165,7 +165,7 @@ class UserTest extends TestCase
      */
     public function exibe_usuario_inexistente()
     {
-        $last_user = DB::table('users')->latest()->first();
+        $last_user = DB::table('users')->orderBy('id', 'desc')->first();
         $last_plus_one = $last_user->id + 1;
         $this->get($this->api_prefix . '/' . $last_plus_one)
             ->seeStatusCode(404)
